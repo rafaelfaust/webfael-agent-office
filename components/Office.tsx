@@ -17,6 +17,23 @@ const statusClass = {
   online: "status online",
 };
 
+const desks = [
+  { className: "desk desk-ceo", label: "Estratégia" },
+  { className: "desk desk-dev", label: "Dev" },
+  { className: "desk desk-content", label: "Conteúdo" },
+  { className: "desk desk-sales", label: "SDR" },
+  { className: "meeting-table", label: "Daily" },
+];
+
+const decor = [
+  "plant plant-a",
+  "plant plant-b",
+  "sofa",
+  "screen screen-a",
+  "screen screen-b",
+  "rug",
+];
+
 function AgentAvatar({ agent, selected, onClick }: { agent: Agent; selected: boolean; onClick: () => void }) {
   return (
     <button
@@ -25,10 +42,13 @@ function AgentAvatar({ agent, selected, onClick }: { agent: Agent; selected: boo
       onClick={onClick}
       aria-label={`Selecionar ${agent.name}`}
     >
+      <span className="agent-label">
+        <span className={statusClass[agent.status]} />
+        {agent.name}
+      </span>
       <span className="agent-shadow" />
+      <span className="agent-head" />
       <span className="agent-body">{agent.initials}</span>
-      <span className={statusClass[agent.status]} />
-      <span className="agent-name">{agent.name}</span>
     </button>
   );
 }
@@ -43,7 +63,7 @@ export function Office() {
         <div>
           <p className="eyebrow">Webfael Command Center</p>
           <h1>Escritório 2D dos Agentes</h1>
-          <p className="subtitle">Visão operacional em tempo real para WebCEO, WebIxtepo, WebRafa e WebLia.</p>
+          <p className="subtitle">Mapa isométrico operacional para acompanhar presença, tarefas, bloqueios e entregas do time de agentes.</p>
         </div>
         <div className="live-pill"><span /> Operação ativa</div>
       </section>
@@ -59,14 +79,22 @@ export function Office() {
 
       <section className="workspace-grid">
         <div className="office-card">
-          <div className="office-map">
-            <div className="room room-strategy"><span>Sala Estratégica</span></div>
-            <div className="room room-commercial"><span>Sala Comercial</span></div>
-            <div className="room room-dev"><span>Laboratório Dev</span></div>
-            <div className="room room-studio"><span>Estúdio de Conteúdo</span></div>
-            <div className="corridor horizontal" />
-            <div className="corridor vertical" />
-            <div className="holo-table">OPS</div>
+          <div className="office-map" aria-label="Escritório virtual 2D da Webfael">
+            <div className="iso-floor" />
+            <div className="wall wall-left" />
+            <div className="wall wall-back" />
+            <div className="office-title">WEBFAEL OPS</div>
+            <div className="zone zone-dev">LAB DEV</div>
+            <div className="zone zone-content">ESTÚDIO</div>
+            <div className="zone zone-sales">COMERCIAL</div>
+            {desks.map((desk) => (
+              <div key={desk.className} className={desk.className}>
+                <span className="monitor" />
+                <span className="chair" />
+                <small>{desk.label}</small>
+              </div>
+            ))}
+            {decor.map((item) => <span key={item} className={item} />)}
             {agents.map((agent) => (
               <AgentAvatar key={agent.id} agent={agent} selected={agent.id === selectedId} onClick={() => setSelectedId(agent.id)} />
             ))}
@@ -84,7 +112,7 @@ export function Office() {
           </dl>
           <div className="next-box">
             <strong>Próxima evolução</strong>
-            <p>Conectar esse painel na API/status real do OpenClaw, Jira e entregas diárias.</p>
+            <p>Conectar status real do OpenClaw/Jira e trocar blocos CSS por sprites isométricos próprios da Webfael.</p>
           </div>
         </aside>
       </section>
