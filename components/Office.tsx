@@ -1,7 +1,7 @@
 "use client";
 
 import { CSSProperties, useState } from "react";
-import { Agent, agents, metrics } from "@/data/agents";
+import { Agent, agents } from "@/data/agents";
 import { officeMap, tileDefinitions, tileTheme } from "@/data/officeMap";
 
 const statusLabel = {
@@ -21,7 +21,7 @@ const statusClass = {
 function AgentAvatar({ agent, selected, onClick }: { agent: Agent; selected: boolean; onClick: () => void }) {
   return (
     <button
-      className={`rpg-agent ${selected ? "selected" : ""}`}
+      className={`map-agent ${selected ? "selected" : ""}`}
       style={{
         "--agent-color": agent.color,
         "--agent-x": agent.grid.x,
@@ -30,16 +30,28 @@ function AgentAvatar({ agent, selected, onClick }: { agent: Agent; selected: boo
       onClick={onClick}
       aria-label={`Selecionar ${agent.name}`}
     >
-      <span className="rpg-agent-label">
+      <span className="agent-nameplate">
         <span className={statusClass[agent.status]} />
         {agent.name}
       </span>
-      <span className="rpg-agent-shadow" />
-      <span className="rpg-agent-sprite">
-        <span className="rpg-agent-hair" />
-        <span className="rpg-agent-head" />
-        <span className="rpg-agent-body">{agent.initials}</span>
-        <span className="rpg-agent-feet" />
+      <span className="agent-shadow" />
+      <span className="agent-sprite" aria-hidden="true">
+        <span className="agent-hair" />
+        <span className="agent-face" />
+        <span className="agent-torso">{agent.initials}</span>
+        <span className="agent-legs" />
+      </span>
+    </button>
+  );
+}
+
+function AgentRow({ agent, selected, onClick }: { agent: Agent; selected: boolean; onClick: () => void }) {
+  return (
+    <button className={`agent-row ${selected ? "active" : ""}`} onClick={onClick}>
+      <span className="agent-dot" style={{ background: agent.color }} />
+      <span>
+        <strong>{agent.name}</strong>
+        <small>{statusLabel[agent.status]} · {agent.room}</small>
       </span>
     </button>
   );
@@ -50,47 +62,27 @@ export function Office() {
   const selected = agents.find((agent) => agent.id === selectedId) ?? agents[0];
 
   return (
-    <main className="shell">
-      <section className="hero">
-        <div>
-          <p className="eyebrow">Webfael Agent Office</p>
-          <h1>Escritório RPG top-down</h1>
-          <p className="subtitle">
-            V2 simples no estilo Tibia-lite: mapa em tiles, agentes em grid e estrutura preparada para trocar tema/assets sem reescrever a tela.
-          </p>
-        </div>
-        <div className="live-pill"><span /> Tilemap V2</div>
-      </section>
-
-      <section className="metrics">
-        {metrics.map((metric) => (
-          <article key={metric.label}>
-            <strong>{metric.value}</strong>
-            <span>{metric.label}</span>
-          </article>
-        ))}
-      </section>
-
-      <section className="workspace-grid">
-        <div className="office-card">
-          <div className="map-header">
-            <div>
-              <strong>{tileTheme.name}</strong>
-              <span>{officeMap.cols}x{officeMap.rows} tiles · customizável por dados</span>
-            </div>
-            <small>Sem engine pesada</small>
+    <main className="game-shell">
+      <section className="game-stage">
+        <div className="game-topbar">
+          <div>
+            <span className="kicker">Webfael Agent Office</span>
+            <h1>{tileTheme.name}</h1>
           </div>
+          <div className="topbar-chip"><span /> Visual V3 · aprovação</div>
+        </div>
 
+        <div className="map-viewport">
           <div
-            className="rpg-map"
+            className="tile-map"
             style={{
               "--cols": officeMap.cols,
               "--rows": officeMap.rows,
             } as CSSProperties}
-            aria-label="Mapa top-down 2D do escritório virtual da Webfael"
+            aria-label="Mapa 2D top-down do escritório virtual da Webfael"
           >
-            <div className="map-plate" />
-            <div className="tile-layer">
+            <div className="map-floor-glow" />
+            <div className="tile-grid">
               {officeMap.tiles.map((tile) => {
                 const definition = tileDefinitions[tile.type];
                 return (
@@ -113,23 +105,40 @@ export function Office() {
             </div>
           </div>
         </div>
+      </section>
 
-        <aside className="panel">
-          <p className="panel-label">Agente selecionado</p>
+      <aside className="hud-panel">
+        <div className="hud-card brand-card">
+          <span className="kicker">HUD</span>
+          <strong>Operação Webfael</strong>
+          <small>{officeMap.cols}x{officeMap.rows} tiles · CSS tilemap editável</small>
+        </div>
+
+        <div className="hud-card selected-card">
+          <p className="hud-label">Selecionado</p>
           <h2>{selected.name}</h2>
           <span className={`badge ${selected.status}`}>{statusLabel[selected.status]}</span>
           <dl>
             <div><dt>Função</dt><dd>{selected.role}</dd></div>
-            <div><dt>Sala</dt><dd>{selected.room}</dd></div>
-            <div><dt>Grid</dt><dd>X {selected.grid.x} · Y {selected.grid.y}</dd></div>
-            <div><dt>Tarefa atual</dt><dd>{selected.task}</dd></div>
+            <div><dt>Posição</dt><dd>{selected.room} · X{selected.grid.x}/Y{selected.grid.y}</dd></div>
+            <div><dt>Agora</dt><dd>{selected.task}</dd></div>
           </dl>
-          <div className="next-box">
-            <strong>Próximo upgrade técnico</strong>
-            <p>Substituir tiles CSS por PNG/SVG, plugar status real do OpenClaw e permitir edição visual do mapa.</p>
+        </div>
+
+        <div className="hud-card roster-card">
+          <p className="hud-label">Agentes</p>
+          <div className="roster">
+            {agents.map((agent) => (
+              <AgentRow key={agent.id} agent={agent} selected={agent.id === selectedId} onClick={() => setSelectedId(agent.id)} />
+            ))}
           </div>
-        </aside>
-      </section>
+        </div>
+
+        <div className="hud-card note-card">
+          <strong>Próximo passo visual</strong>
+          <p>Trocar os tiles CSS por sprites PNG/SVG próprios. A base ficou limpa para personalizar sem mexer na estrutura.</p>
+        </div>
+      </aside>
     </main>
   );
 }
