@@ -31,8 +31,8 @@ export const agents: Agent[] = [
     name: "WebIxtepo",
     role: "Fullstack, automações, IA e infraestrutura",
     room: "Laboratório Dev",
-    status: "aguardando",
-    task: "Aguardando validação de secrets/API para integrações",
+    status: "executando",
+    task: "Refatorando interface isométrica e preparando integração OpenClaw",
     x: 30,
     y: 67,
     color: "#38bdf8",
@@ -66,7 +66,7 @@ export const agents: Agent[] = [
 
 export const metrics = [
   { label: "Agentes ativos", value: "4" },
-  { label: "Entregas hoje", value: "0" },
+  { label: "Entregas hoje", value: "1" },
   { label: "Bloqueios", value: "1" },
-  { label: "Status operação", value: "Mock V1.1" },
+  { label: "Status operação", value: "Mock V2" },
 ];
