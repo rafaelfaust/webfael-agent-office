@@ -7,8 +7,7 @@ export type Agent = {
   room: string;
   status: AgentStatus;
   task: string;
-  x: number;
-  y: number;
+  grid: { x: number; y: number };
   color: string;
   initials: string;
 };
@@ -18,11 +17,10 @@ export const agents: Agent[] = [
     id: "webceo",
     name: "WebCEO",
     role: "Estratégia e coordenação operacional",
-    room: "Mesa central de comando",
+    room: "War Room / comando central",
     status: "executando",
-    task: "Coordenando entregas, Jira e prioridades do dia",
-    x: 46,
-    y: 38,
+    task: "Coordenando prioridades, entregas e gargalos do dia",
+    grid: { x: 8, y: 3 },
     color: "#facc15",
     initials: "CEO",
   },
@@ -30,11 +28,10 @@ export const agents: Agent[] = [
     id: "webixtepo",
     name: "WebIxtepo",
     role: "Fullstack, automações, IA e infraestrutura",
-    room: "Laboratório Dev",
+    room: "Lab Dev",
     status: "executando",
-    task: "Refatorando interface isométrica e preparando integração OpenClaw",
-    x: 30,
-    y: 67,
+    task: "Recriando o Agent Office em tilemap top-down customizável",
+    grid: { x: 4, y: 7 },
     color: "#38bdf8",
     initials: "IX",
   },
@@ -45,8 +42,7 @@ export const agents: Agent[] = [
     room: "Estúdio de Conteúdo",
     status: "online",
     task: "Pronto para campanhas, vídeos e posicionamento",
-    x: 68,
-    y: 63,
+    grid: { x: 12, y: 7 },
     color: "#fb7185",
     initials: "RF",
   },
@@ -57,16 +53,15 @@ export const agents: Agent[] = [
     room: "Sala Comercial",
     status: "bloqueado",
     task: "Precisa de lista de leads ou fonte pública definida",
-    x: 72,
-    y: 31,
+    grid: { x: 15, y: 3 },
     color: "#a78bfa",
     initials: "LIA",
   },
 ];
 
 export const metrics = [
-  { label: "Agentes ativos", value: "4" },
-  { label: "Entregas hoje", value: "1" },
-  { label: "Bloqueios", value: "1" },
-  { label: "Status operação", value: "Mock V2" },
+  { label: "Agentes no mapa", value: String(agents.length) },
+  { label: "Formato visual", value: "Top-down" },
+  { label: "Mapa", value: "Tilemap" },
+  { label: "Status operação", value: "V2" },
 ];
