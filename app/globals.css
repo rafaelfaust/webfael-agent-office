@@ -6,8 +6,8 @@
   --text: #f8fafc;
   --muted: #a3a3a3;
   --line: rgba(250, 204, 21, 0.22);
-  --tile: 46px;
-  --gap: 2px;
+  --tile: 44px;
+  --gap: 1px;
 }
 
 * { box-sizing: border-box; }
@@ -61,13 +61,11 @@ h1 { margin: 4px 0 0; font-size: clamp(28px, 4vw, 48px); line-height: .95; lette
   overflow: auto;
   border-radius: 24px;
   background:
-    linear-gradient(rgba(250,204,21,.045) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(250,204,21,.045) 1px, transparent 1px),
-    radial-gradient(circle at 50% 20%, rgba(250,204,21,.13), transparent 24rem),
-    linear-gradient(180deg, #111827, #050505);
-  background-size: 34px 34px, 34px 34px, auto, auto;
+    radial-gradient(circle at 18% 18%, rgba(34,197,94,.12), transparent 18rem),
+    radial-gradient(circle at 80% 70%, rgba(250,204,21,.14), transparent 22rem),
+    linear-gradient(180deg, #0f172a, #050505);
   border: 1px solid rgba(250,204,21,.15);
-  padding: 54px;
+  padding: 46px;
 }
 
 .tile-map {
@@ -112,13 +110,16 @@ h1 { margin: 4px 0 0; font-size: clamp(28px, 4vw, 48px); line-height: .95; lette
 .tile::after { content: ""; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(255,255,255,.13), transparent 45%, rgba(0,0,0,.14)); pointer-events: none; }
 .tile span { position: relative; z-index: 1; text-shadow: 0 1px 0 rgba(255,255,255,.18); }
 .tile em { position: absolute; left: 4px; bottom: 4px; z-index: 2; color: rgba(17,24,39,.67); font-style: normal; font-size: 8px; line-height: 1; font-weight: 950; text-transform: uppercase; letter-spacing: .04em; }
-.tile-floor { background: #bd8f59; background-image: linear-gradient(90deg, rgba(0,0,0,.08) 1px, transparent 1px), linear-gradient(rgba(255,255,255,.08) 1px, transparent 1px); background-size: 16px 16px; }
-.tile-wall { background: linear-gradient(180deg, #8a6747, #3f2d22); border-color: rgba(250,204,21,.2); box-shadow: inset 0 5px 0 rgba(255,255,255,.13), inset 0 -12px 0 rgba(0,0,0,.2); }
-.tile-desk { color: #fef3c7; background: linear-gradient(180deg, #b77912, #713f12); }
+.tile-floor { background: #c9b98c; background-image: linear-gradient(90deg, rgba(0,0,0,.12) 1px, transparent 1px), linear-gradient(rgba(255,255,255,.15) 1px, transparent 1px); background-size: 22px 22px; }
+.tile-wall { background: linear-gradient(180deg, #9ca3af, #475569 48%, #273141); border-color: rgba(255,255,255,.22); box-shadow: inset 0 6px 0 rgba(255,255,255,.2), inset 0 -12px 0 rgba(0,0,0,.22); }
+.tile-desk { color: #fef3c7; background: linear-gradient(180deg, #c08422, #7c3f13); box-shadow: inset 0 5px 0 rgba(255,255,255,.22), inset 0 -9px 0 rgba(0,0,0,.2); }
+.tile-counter { color: #fde68a; background: linear-gradient(180deg, #d97706, #78350f); box-shadow: inset 0 0 0 5px rgba(255,255,255,.12); }
+.tile-crate { color: #451a03; background: repeating-linear-gradient(45deg, #b45309 0 9px, #92400e 9px 18px); }
+.tile-board { color: #facc15; background: linear-gradient(180deg, #111827, #020617); box-shadow: inset 0 0 0 5px #334155, 0 0 20px rgba(250,204,21,.18); }
 .tile-pc { color: #67e8f9; background: linear-gradient(180deg, #1f2937, #020617); box-shadow: inset 0 0 0 5px #475569, 0 0 20px rgba(56,189,248,.22); }
-.tile-plant { color: #86efac; background: radial-gradient(circle, #16a34a 0 36%, #713f12 38% 62%, #bd8f59 64%); }
-.tile-spawn { color: rgba(250,204,21,.82); background: radial-gradient(circle, rgba(250,204,21,.32), #bd8f59 64%); }
-.tile-rug { background: radial-gradient(circle, rgba(250,204,21,.58), rgba(120,53,15,.5)); }
+.tile-plant { color: #86efac; background: radial-gradient(circle, #16a34a 0 36%, #713f12 38% 62%, #c9b98c 64%); }
+.tile-spawn { color: rgba(250,204,21,.82); background: radial-gradient(circle, rgba(250,204,21,.32), #c9b98c 64%); }
+.tile-rug { background: linear-gradient(90deg, rgba(250,204,21,.5), rgba(120,53,15,.48)); }
 .tile-server { color: #22c55e; background: repeating-linear-gradient(180deg, #020617 0 8px, #1f2937 8px 15px); box-shadow: inset 0 0 0 5px #334155; }
 .tile-door { color: #fde68a; background: linear-gradient(180deg, #a16207, #451a03); }
 
@@ -138,16 +139,21 @@ h1 { margin: 4px 0 0; font-size: clamp(28px, 4vw, 48px); line-height: .95; lette
   z-index: 10;
   pointer-events: auto;
 }
+.map-agent.is-working {
+  animation: agentWalk 9s steps(1, end) infinite;
+}
 .agent-nameplate { position: absolute; left: 50%; top: -4px; transform: translateX(-50%); display: inline-flex; align-items: center; gap: 6px; padding: 5px 8px; border-radius: 999px; background: rgba(2,6,23,.95); border: 1px solid rgba(255,255,255,.16); font-size: 11px; font-weight: 950; white-space: nowrap; box-shadow: 0 10px 24px rgba(0,0,0,.32); }
 .agent-shadow { position: absolute; width: 38px; height: 13px; background: rgba(0,0,0,.38); border-radius: 50%; left: 50%; bottom: 5px; transform: translateX(-50%); filter: blur(2px); }
-.agent-sprite { position: absolute; left: 50%; top: 24px; width: 40px; height: 61px; transform: translateX(-50%); image-rendering: pixelated; }
-.agent-face { position: absolute; left: 9px; top: 8px; width: 22px; height: 21px; border-radius: 8px; background: #f6cda8; border: 2px solid rgba(0,0,0,.22); z-index: 2; }
-.agent-hair { position: absolute; left: 8px; top: 4px; width: 24px; height: 13px; border-radius: 8px 8px 4px 4px; background: #111827; z-index: 3; }
-.agent-torso { position: absolute; left: 4px; top: 29px; display: grid; place-items: center; width: 32px; height: 25px; border-radius: 8px 8px 5px 5px; background: linear-gradient(180deg, var(--agent-color), rgba(255,255,255,.22)); color: #050505; border: 2px solid rgba(255,255,255,.58); font-size: 9px; font-weight: 950; }
-.agent-torso::before, .agent-torso::after { content: ""; position: absolute; top: 4px; width: 8px; height: 18px; border-radius: 999px; background: color-mix(in srgb, var(--agent-color), #000 25%); }
+.agent-sprite { position: absolute; left: 50%; top: 24px; width: 38px; height: 62px; transform: translateX(-50%); image-rendering: pixelated; }
+.agent-face { position: absolute; left: 10px; top: 9px; width: 18px; height: 18px; border-radius: 3px; background: #f6cda8; border: 2px solid rgba(0,0,0,.32); z-index: 2; box-shadow: inset 4px 0 rgba(255,255,255,.16); }
+.agent-hair { position: absolute; left: 8px; top: 5px; width: 22px; height: 10px; border-radius: 2px; background: #111827; z-index: 3; }
+.agent-torso { position: absolute; left: 5px; top: 29px; display: grid; place-items: center; width: 28px; height: 24px; border-radius: 3px; background: linear-gradient(180deg, var(--agent-color), rgba(255,255,255,.22)); color: #050505; border: 2px solid rgba(255,255,255,.58); font-size: 8px; font-weight: 950; }
+.agent-torso::before, .agent-torso::after { content: ""; position: absolute; top: 3px; width: 7px; height: 17px; border-radius: 2px; background: color-mix(in srgb, var(--agent-color), #000 25%); }
 .agent-torso::before { left: -7px; }
 .agent-torso::after { right: -7px; }
-.agent-legs { position: absolute; left: 8px; top: 53px; width: 24px; height: 8px; border-left: 9px solid #111827; border-right: 9px solid #111827; }
+.agent-legs { position: absolute; left: 9px; top: 52px; width: 20px; height: 10px; border-left: 8px solid #111827; border-right: 8px solid #111827; }
+.map-agent.is-working .agent-sprite { animation: spriteBob .55s steps(2, end) infinite; }
+.map-agent.is-working .agent-legs { animation: legsWalk .55s steps(2, end) infinite; }
 .map-agent.selected .agent-sprite { filter: drop-shadow(0 0 12px var(--yellow)); }
 .map-agent.selected .agent-torso { outline: 3px solid var(--yellow); outline-offset: 3px; }
 .status { width: 10px; height: 10px; border-radius: 50%; border: 2px solid #020617; flex: 0 0 auto; }
@@ -191,4 +197,33 @@ dd { margin: 0; line-height: 1.42; }
   .map-viewport { min-height: 560px; padding: 22px; }
   .hud-panel { grid-template-columns: 1fr; }
   .map-agent { transform: translate(-50%, -75%) scale(.78); }
+}
+
+@keyframes agentWalk {
+  0%, 100% {
+    left: calc(var(--p0x) * (var(--tile) + var(--gap)) + (var(--tile) / 2));
+    top: calc(var(--p0y) * (var(--tile) + var(--gap)) + (var(--tile) / 2));
+  }
+  25% {
+    left: calc(var(--p1x) * (var(--tile) + var(--gap)) + (var(--tile) / 2));
+    top: calc(var(--p1y) * (var(--tile) + var(--gap)) + (var(--tile) / 2));
+  }
+  50% {
+    left: calc(var(--p2x) * (var(--tile) + var(--gap)) + (var(--tile) / 2));
+    top: calc(var(--p2y) * (var(--tile) + var(--gap)) + (var(--tile) / 2));
+  }
+  75% {
+    left: calc(var(--p3x) * (var(--tile) + var(--gap)) + (var(--tile) / 2));
+    top: calc(var(--p3y) * (var(--tile) + var(--gap)) + (var(--tile) / 2));
+  }
+}
+
+@keyframes spriteBob {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(-3px); }
+}
+
+@keyframes legsWalk {
+  0%, 100% { border-left-width: 5px; border-right-width: 10px; }
+  50% { border-left-width: 10px; border-right-width: 5px; }
 }

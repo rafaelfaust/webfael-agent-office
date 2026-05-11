@@ -1,4 +1,16 @@
-export type TileType = "floor" | "wall" | "desk" | "pc" | "plant" | "agentSpawn" | "rug" | "server" | "door";
+export type TileType =
+  | "floor"
+  | "wall"
+  | "desk"
+  | "pc"
+  | "plant"
+  | "agentSpawn"
+  | "rug"
+  | "server"
+  | "door"
+  | "crate"
+  | "board"
+  | "counter";
 
 export type TileDefinition = {
   label: string;
@@ -16,11 +28,12 @@ export type Tile = {
 };
 
 export const tileTheme = {
-  name: "Webfael Tibia-lite",
+  name: "Webfael Agent Office",
+  subtitle: "Central visual dos agentes operacionais",
   tileSize: 42,
   palette: {
-    floor: "#b98b56",
-    wall: "#5b4636",
+    floor: "#c9b98c",
+    wall: "#606873",
     accent: "#facc15",
   },
 };
@@ -28,13 +41,16 @@ export const tileTheme = {
 export const tileDefinitions: Record<TileType, TileDefinition> = {
   floor: { label: "Piso", className: "tile-floor" },
   wall: { label: "Parede", className: "tile-wall", blocking: true },
-  desk: { label: "Mesa", className: "tile-desk", glyph: "▭", blocking: true },
+  desk: { label: "Mesa de trabalho", className: "tile-desk", glyph: "▭", blocking: true },
   pc: { label: "Computador", className: "tile-pc", glyph: "▣", blocking: true },
   plant: { label: "Planta", className: "tile-plant", glyph: "♣", blocking: true },
-  agentSpawn: { label: "Spawn de agente", className: "tile-spawn", glyph: "◎" },
-  rug: { label: "Tapete", className: "tile-rug" },
+  agentSpawn: { label: "Ponto de agente", className: "tile-spawn", glyph: "◎" },
+  rug: { label: "Tapete/corredor", className: "tile-rug" },
   server: { label: "Rack/Servidor", className: "tile-server", glyph: "▥", blocking: true },
-  door: { label: "Porta", className: "tile-door", glyph: "═" },
+  door: { label: "Porta/passagem", className: "tile-door", glyph: "═" },
+  crate: { label: "Caixa/backlog", className: "tile-crate", glyph: "▤", blocking: true },
+  board: { label: "Quadro de tarefas", className: "tile-board", glyph: "☷", blocking: true },
+  counter: { label: "Balcão", className: "tile-counter", glyph: "▰", blocking: true },
 };
 
 const legend: Record<string, TileType> = {
@@ -47,29 +63,32 @@ const legend: Record<string, TileType> = {
   "R": "rug",
   "V": "server",
   "=": "door",
+  "B": "board",
+  "K": "crate",
+  "T": "counter",
 };
 
 const zones: Record<string, string> = {
-  "3,2": "War Room",
-  "8,2": "Comando",
+  "7,2": "Comando",
   "13,2": "Comercial",
-  "4,8": "Lab Dev",
-  "12,8": "Estúdio",
+  "4,9": "Lab Técnico",
+  "12,9": "Estúdio",
+  "8,6": "Corredor",
 };
 
 export const mapRows = [
-  "##################",
-  "#P....V....C....P#",
-  "#..DD.....DD..DD.#",
-  "#..CS..R..S...SC.#",
-  "#......RRRR......#",
-  "#..####....####..#",
-  "#......RRRR......#",
-  "#..CS..R..S...SC.#",
-  "#..DD.....DD..DD.#",
-  "#P....V....C....P#",
-  "#=======..=======#",
-  "##################",
+  "####################",
+  "#P..B..V..#..T..D.P#",
+  "#...D..S..=..S..C..#",
+  "#...C..D..#..D..D..#",
+  "#........R#R.......#",
+  "######===R.R===#####",
+  "#........R.R.......#",
+  "#..C..D..#..D..C..P#",
+  "#..S..K..=..S..D...#",
+  "#..D..V..#..B..K...#",
+  "#P......R.R.......P#",
+  "####################",
 ];
 
 export const officeMap = {

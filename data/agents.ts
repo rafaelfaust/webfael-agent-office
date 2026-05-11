@@ -8,6 +8,7 @@ export type Agent = {
   status: AgentStatus;
   task: string;
   grid: { x: number; y: number };
+  workPath: { x: number; y: number }[];
   color: string;
   initials: string;
 };
@@ -17,10 +18,16 @@ export const agents: Agent[] = [
     id: "webceo",
     name: "WebCEO",
     role: "Estratégia e coordenação operacional",
-    room: "War Room / comando central",
+    room: "Sala de Comando",
     status: "executando",
-    task: "Coordenando prioridades, entregas e gargalos do dia",
+    task: "Circulando entre Jira, entregas e prioridades críticas",
     grid: { x: 8, y: 3 },
+    workPath: [
+      { x: 8, y: 3 },
+      { x: 8, y: 5 },
+      { x: 6, y: 5 },
+      { x: 6, y: 3 },
+    ],
     color: "#facc15",
     initials: "CEO",
   },
@@ -28,10 +35,17 @@ export const agents: Agent[] = [
     id: "webixtepo",
     name: "WebIxtepo",
     role: "Fullstack, automações, IA e infraestrutura",
-    room: "Lab Dev",
+    room: "Laboratório Técnico",
     status: "executando",
-    task: "Recriando o Agent Office em tilemap top-down customizável",
-    grid: { x: 4, y: 7 },
+    task: "Ajustando sistemas, automações e integrações",
+    grid: { x: 4, y: 8 },
+    workPath: [
+      { x: 4, y: 8 },
+      { x: 5, y: 8 },
+      { x: 5, y: 10 },
+      { x: 3, y: 10 },
+      { x: 3, y: 8 },
+    ],
     color: "#38bdf8",
     initials: "IX",
   },
@@ -39,10 +53,16 @@ export const agents: Agent[] = [
     id: "webrafa",
     name: "WebRafa",
     role: "Comunicação, conteúdo e presença da marca",
-    room: "Estúdio de Conteúdo",
+    room: "Estúdio de Comunicação",
     status: "online",
-    task: "Pronto para campanhas, vídeos e posicionamento",
-    grid: { x: 12, y: 7 },
+    task: "Preparando conteúdo, atendimento e presença visual",
+    grid: { x: 12, y: 8 },
+    workPath: [
+      { x: 12, y: 8 },
+      { x: 14, y: 8 },
+      { x: 14, y: 10 },
+      { x: 12, y: 10 },
+    ],
     color: "#fb7185",
     initials: "RF",
   },
@@ -51,9 +71,16 @@ export const agents: Agent[] = [
     name: "WebLia",
     role: "SDR, prospecção e qualificação comercial",
     room: "Sala Comercial",
-    status: "bloqueado",
-    task: "Precisa de lista de leads ou fonte pública definida",
+    status: "executando",
+    task: "Mapeando leads e fazendo follow-up consultivo",
     grid: { x: 15, y: 3 },
+    workPath: [
+      { x: 15, y: 3 },
+      { x: 13, y: 3 },
+      { x: 13, y: 5 },
+      { x: 16, y: 5 },
+      { x: 16, y: 3 },
+    ],
     color: "#a78bfa",
     initials: "LIA",
   },
@@ -63,5 +90,5 @@ export const metrics = [
   { label: "Agentes no mapa", value: String(agents.length) },
   { label: "Formato visual", value: "Top-down" },
   { label: "Mapa", value: "Tilemap" },
-  { label: "Status operação", value: "V2" },
+  { label: "Status operação", value: "V4" },
 ];

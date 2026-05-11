@@ -19,13 +19,23 @@ const statusClass = {
 };
 
 function AgentAvatar({ agent, selected, onClick }: { agent: Agent; selected: boolean; onClick: () => void }) {
+  const path = agent.workPath.length ? agent.workPath : [agent.grid];
+
   return (
     <button
-      className={`map-agent ${selected ? "selected" : ""}`}
+      className={`map-agent ${agent.status === "executando" ? "is-working" : ""} ${selected ? "selected" : ""}`}
       style={{
         "--agent-color": agent.color,
         "--agent-x": agent.grid.x,
         "--agent-y": agent.grid.y,
+        "--p0x": path[0]?.x ?? agent.grid.x,
+        "--p0y": path[0]?.y ?? agent.grid.y,
+        "--p1x": path[1]?.x ?? path[0]?.x ?? agent.grid.x,
+        "--p1y": path[1]?.y ?? path[0]?.y ?? agent.grid.y,
+        "--p2x": path[2]?.x ?? path[0]?.x ?? agent.grid.x,
+        "--p2y": path[2]?.y ?? path[0]?.y ?? agent.grid.y,
+        "--p3x": path[3]?.x ?? path[0]?.x ?? agent.grid.x,
+        "--p3y": path[3]?.y ?? path[0]?.y ?? agent.grid.y,
       } as CSSProperties}
       onClick={onClick}
       aria-label={`Selecionar ${agent.name}`}
@@ -66,10 +76,10 @@ export function Office() {
       <section className="game-stage">
         <div className="game-topbar">
           <div>
-            <span className="kicker">Webfael Agent Office</span>
-            <h1>{tileTheme.name}</h1>
+            <span className="kicker">{tileTheme.name}</span>
+            <h1>{tileTheme.subtitle}</h1>
           </div>
-          <div className="topbar-chip"><span /> Visual V3 · aprovação</div>
+          <div className="topbar-chip"><span /> Visual V4 · agentes em movimento</div>
         </div>
 
         <div className="map-viewport">
@@ -111,7 +121,7 @@ export function Office() {
         <div className="hud-card brand-card">
           <span className="kicker">HUD</span>
           <strong>Operação Webfael</strong>
-          <small>{officeMap.cols}x{officeMap.rows} tiles · CSS tilemap editável</small>
+          <small>{officeMap.cols}x{officeMap.rows} tiles · salas, corredores e agentes vivos</small>
         </div>
 
         <div className="hud-card selected-card">
@@ -120,7 +130,7 @@ export function Office() {
           <span className={`badge ${selected.status}`}>{statusLabel[selected.status]}</span>
           <dl>
             <div><dt>Função</dt><dd>{selected.role}</dd></div>
-            <div><dt>Posição</dt><dd>{selected.room} · X{selected.grid.x}/Y{selected.grid.y}</dd></div>
+            <div><dt>Base</dt><dd>{selected.room} · X{selected.grid.x}/Y{selected.grid.y}</dd></div>
             <div><dt>Agora</dt><dd>{selected.task}</dd></div>
           </dl>
         </div>
@@ -136,7 +146,7 @@ export function Office() {
 
         <div className="hud-card note-card">
           <strong>Próximo passo visual</strong>
-          <p>Trocar os tiles CSS por sprites PNG/SVG próprios. A base ficou limpa para personalizar sem mexer na estrutura.</p>
+          <p>Usar a imagem enviada como referência de linguagem top-down: mais textura, balcões, mesas e circulação entre salas — sem citar o nome do jogo no produto.</p>
         </div>
       </aside>
     </main>
