@@ -1,7 +1,7 @@
 "use client";
 
-import { CSSProperties, useState } from "react";
-import { Agent, agents } from "@/data/agents";
+import { CSSProperties, useMemo, useState } from "react";
+import { Agent, agents, deliveryBoard, operations } from "@/data/agents";
 import { officeMap, tileDefinitions, tileTheme } from "@/data/officeMap";
 
 const statusLabel = {
@@ -47,8 +47,12 @@ function AgentAvatar({ agent, selected, onClick }: { agent: Agent; selected: boo
       <span className="agent-shadow" />
       <span className="agent-sprite" aria-hidden="true">
         <span className="agent-hair" />
-        <span className="agent-face" />
+        <span className="agent-face"><i /><b /></span>
+        <span className="agent-ear left" />
+        <span className="agent-ear right" />
         <span className="agent-torso">{agent.initials}</span>
+        <span className="agent-arm left" />
+        <span className="agent-arm right" />
         <span className="agent-legs" />
       </span>
     </button>
@@ -63,7 +67,18 @@ function AgentRow({ agent, selected, onClick }: { agent: Agent; selected: boolea
         <strong>{agent.name}</strong>
         <small>{statusLabel[agent.status]} · {agent.room}</small>
       </span>
+      <span className="agent-load" style={{ "--load": `${agent.load}%` } as CSSProperties} />
     </button>
+  );
+}
+
+function MiniMap() {
+  const importantTiles = useMemo(() => officeMap.tiles.filter((tile) => tile.zone), []);
+
+  return (
+    <div className="mini-map" style={{ "--cols": officeMap.cols, "--rows": officeMap.rows } as CSSProperties}>
+      {importantTiles.map((tile) => <span key={tile.id} style={{ gridColumn: tile.x + 1, gridRow: tile.y + 1 }} title={tile.zone} />)}
+    </div>
   );
 }
 
@@ -76,13 +91,26 @@ export function Office() {
       <section className="game-stage">
         <div className="game-topbar">
           <div>
-            <span className="kicker">{tileTheme.name}</span>
+            <span className="kicker">{tileTheme.name} · {tileTheme.version}</span>
             <h1>{tileTheme.subtitle}</h1>
           </div>
-          <div className="topbar-chip"><span /> Visual V4 · agentes em movimento</div>
+          <div className="topbar-actions">
+            <div className="topbar-chip"><span /> Operação online</div>
+            <div className="topbar-chip ghost">24x12 tiles · preview evidenciável</div>
+          </div>
+        </div>
+
+        <div className="ops-strip">
+          {operations.map((op) => (
+            <div className={`op-card ${op.tone}`} key={op.label}>
+              <strong>{op.value}</strong>
+              <span>{op.label}</span>
+            </div>
+          ))}
         </div>
 
         <div className="map-viewport">
+          <div className="viewport-scanline" />
           <div
             className="tile-map"
             style={{
@@ -92,6 +120,10 @@ export function Office() {
             aria-label="Mapa 2D top-down do escritório virtual da Webfael"
           >
             <div className="map-floor-glow" />
+            <div className="room-label command">Sala de comando</div>
+            <div className="room-label sales">Comercial</div>
+            <div className="room-label tech">Lab técnico</div>
+            <div className="room-label studio">Estúdio</div>
             <div className="tile-grid">
               {officeMap.tiles.map((tile) => {
                 const definition = tileDefinitions[tile.type];
@@ -121,18 +153,25 @@ export function Office() {
         <div className="hud-card brand-card">
           <span className="kicker">HUD</span>
           <strong>Operação Webfael</strong>
-          <small>{officeMap.cols}x{officeMap.rows} tiles · salas, corredores e agentes vivos</small>
+          <small>{officeMap.cols}x{officeMap.rows} tiles · salas, corredores, tarefas e agentes vivos</small>
+          <MiniMap />
         </div>
 
         <div className="hud-card selected-card">
-          <p className="hud-label">Selecionado</p>
+          <p className="hud-label">Agente selecionado</p>
           <h2>{selected.name}</h2>
-          <span className={`badge ${selected.status}`}>{statusLabel[selected.status]}</span>
+          <div className="selected-meta">
+            <span className={`badge ${selected.status}`}>{statusLabel[selected.status]}</span>
+            <span className="mood">{selected.mood}</span>
+          </div>
           <dl>
             <div><dt>Função</dt><dd>{selected.role}</dd></div>
             <div><dt>Base</dt><dd>{selected.room} · X{selected.grid.x}/Y{selected.grid.y}</dd></div>
             <div><dt>Agora</dt><dd>{selected.task}</dd></div>
           </dl>
+          <div className="queue-list">
+            {selected.queue.map((item) => <span key={item}>{item}</span>)}
+          </div>
         </div>
 
         <div className="hud-card roster-card">
@@ -144,9 +183,25 @@ export function Office() {
           </div>
         </div>
 
+        <div className="hud-card delivery-card">
+          <p className="hud-label">Painel de entregas</p>
+          <div className="delivery-list">
+            {deliveryBoard.map((item) => (
+              <article key={item.title}>
+                <div>
+                  <strong>{item.title}</strong>
+                  <small>{item.owner} · {item.state}</small>
+                </div>
+                <span>{item.progress}%</span>
+                <i style={{ "--progress": `${item.progress}%` } as CSSProperties} />
+              </article>
+            ))}
+          </div>
+        </div>
+
         <div className="hud-card note-card">
-          <strong>Próximo passo visual</strong>
-          <p>Usar a imagem enviada como referência de linguagem top-down: mais textura, balcões, mesas e circulação entre salas — sem citar o nome do jogo no produto.</p>
+          <strong>V4 entregue</strong>
+          <p>Mapa mais rico, sprites CSS detalhados, status por agente, métricas e quadro de entregas. Base pronta para trocar CSS sprites por PNG/SVG reais depois.</p>
         </div>
       </aside>
     </main>

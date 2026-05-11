@@ -2,17 +2,18 @@
 
 Painel 2D dos agentes operacionais da Webfael.
 
-## Entrega V2
+## Entrega V4
 
-- Visual refeito para **RPG top-down / Tibia-lite**, sem engine pesada.
-- Mapa renderizado por **tilemap em dados** (`data/officeMap.ts`).
-- Agentes posicionados por grid (`data/agents.ts`), não por porcentagem solta.
-- Tema CSS preparado para trocar tiles por PNG/SVG depois.
-- Painel lateral mostra status, sala, grid e tarefa atual do agente selecionado.
+- Visual elevado para **central operacional / jogo 2D top-down**, sem citar referência externa no produto.
+- Mapa ampliado para **24x12 tiles**, com salas mais ricas: comando, comercial, lab técnico, estúdio, NOC/backlog, divisórias de vidro, consoles, servidores, lounge e café.
+- Sprites CSS dos agentes mais detalhados: corpo, rosto, olhos, cabelo, sombra, nameplate, glow de seleção e animação de caminhada por grid.
+- HUD lateral com agente selecionado, carga operacional, fila de contexto, minimap, roster e painel de entregas.
+- Barra de métricas no topo: entregas, tarefas, bloqueios e meta de recorrência.
+- Evidência visual gerada em `artifacts/agent-office-v4-preview.svg`.
 
 ## Como customizar o mapa
 
-Edite `data/officeMap.ts`:
+Edite `data/officeMap.ts`. Cada caractere vira um tile:
 
 ```ts
 const legend = {
@@ -25,16 +26,17 @@ const legend = {
   "R": "rug",
   "V": "server",
   "=": "door",
+  "B": "board",
+  "K": "crate",
+  "T": "counter",
+  "G": "glass",
+  "L": "sofa",
+  "X": "console",
+  "F": "coffee",
 };
 ```
 
-Depois altere as linhas em `mapRows`. Cada caractere vira um tile.
-
-Para mudar posição de agente, edite `grid` em `data/agents.ts`:
-
-```ts
-grid: { x: 8, y: 3 }
-```
+Para mudar posição de agente, edite `grid` e `workPath` em `data/agents.ts`.
 
 ## Agentes
 
@@ -52,17 +54,15 @@ npm run dev
 
 Abra `http://localhost:3000`.
 
-## Publicar na Vercel
+## Validar build
 
-1. Suba este projeto no GitHub.
-2. Importe o repositório na Vercel.
-3. Framework: Next.js.
-4. Build command: `npm run build`.
-5. Output: padrão da Vercel.
+```bash
+npm run build
+```
 
 ## Próximas integrações
 
 - API real do OpenClaw para status dos agentes.
-- Jira para tarefas, entregas e bloqueios.
-- Métricas de WhatsApp/Telegram/Gateway.
+- Jira/GitHub/Telegram para tarefas, entregas e bloqueios.
 - Editor visual de tilemap.
+- Troca dos CSS sprites por atlas PNG/SVG dedicado quando houver direção de arte final.

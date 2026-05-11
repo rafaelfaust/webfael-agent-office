@@ -10,7 +10,11 @@ export type TileType =
   | "door"
   | "crate"
   | "board"
-  | "counter";
+  | "counter"
+  | "glass"
+  | "sofa"
+  | "console"
+  | "coffee";
 
 export type TileDefinition = {
   label: string;
@@ -29,7 +33,8 @@ export type Tile = {
 
 export const tileTheme = {
   name: "Webfael Agent Office",
-  subtitle: "Central visual dos agentes operacionais",
+  subtitle: "Central operacional em 2D vivo",
+  version: "Visual V4",
   tileSize: 42,
   palette: {
     floor: "#c9b98c",
@@ -39,18 +44,22 @@ export const tileTheme = {
 };
 
 export const tileDefinitions: Record<TileType, TileDefinition> = {
-  floor: { label: "Piso", className: "tile-floor" },
-  wall: { label: "Parede", className: "tile-wall", blocking: true },
-  desk: { label: "Mesa de trabalho", className: "tile-desk", glyph: "▭", blocking: true },
-  pc: { label: "Computador", className: "tile-pc", glyph: "▣", blocking: true },
+  floor: { label: "Piso técnico", className: "tile-floor" },
+  wall: { label: "Parede estrutural", className: "tile-wall", blocking: true },
+  desk: { label: "Mesa operacional", className: "tile-desk", glyph: "▭", blocking: true },
+  pc: { label: "Terminal", className: "tile-pc", glyph: "▣", blocking: true },
   plant: { label: "Planta", className: "tile-plant", glyph: "♣", blocking: true },
-  agentSpawn: { label: "Ponto de agente", className: "tile-spawn", glyph: "◎" },
-  rug: { label: "Tapete/corredor", className: "tile-rug" },
+  agentSpawn: { label: "Base de agente", className: "tile-spawn", glyph: "◎" },
+  rug: { label: "Corredor premium", className: "tile-rug" },
   server: { label: "Rack/Servidor", className: "tile-server", glyph: "▥", blocking: true },
   door: { label: "Porta/passagem", className: "tile-door", glyph: "═" },
-  crate: { label: "Caixa/backlog", className: "tile-crate", glyph: "▤", blocking: true },
+  crate: { label: "Backlog", className: "tile-crate", glyph: "▤", blocking: true },
   board: { label: "Quadro de tarefas", className: "tile-board", glyph: "☷", blocking: true },
   counter: { label: "Balcão", className: "tile-counter", glyph: "▰", blocking: true },
+  glass: { label: "Divisória de vidro", className: "tile-glass", glyph: "⌁", blocking: true },
+  sofa: { label: "Lounge", className: "tile-sofa", glyph: "▱", blocking: true },
+  console: { label: "Console de comando", className: "tile-console", glyph: "◈", blocking: true },
+  coffee: { label: "Café/energia", className: "tile-coffee", glyph: "◒", blocking: true },
 };
 
 const legend: Record<string, TileType> = {
@@ -66,6 +75,10 @@ const legend: Record<string, TileType> = {
   "B": "board",
   "K": "crate",
   "T": "counter",
+  "G": "glass",
+  "L": "sofa",
+  "X": "console",
+  "F": "coffee",
 };
 
 const zones: Record<string, string> = {
@@ -74,21 +87,23 @@ const zones: Record<string, string> = {
   "4,9": "Lab Técnico",
   "12,9": "Estúdio",
   "8,6": "Corredor",
+  "18,8": "Backlog",
+  "10,10": "NOC",
 };
 
 export const mapRows = [
-  "####################",
-  "#P..B..V..#..T..D.P#",
-  "#...D..S..=..S..C..#",
-  "#...C..D..#..D..D..#",
-  "#........R#R.......#",
-  "######===R.R===#####",
-  "#........R.R.......#",
-  "#..C..D..#..D..C..P#",
-  "#..S..K..=..S..D...#",
-  "#..D..V..#..B..K...#",
-  "#P......R.R.......P#",
-  "####################",
+  "########################",
+  "#P..B..X..G#..T..D..FP#",
+  "#...D..S..G=..S..C..D.#",
+  "#..CC..D..G#..D..D..L.#",
+  "#........RR#RR.......L.#",
+  "######===R...R===#######",
+  "#........R...R........P#",
+  "#..C..D..G#..D..C..B..#",
+  "#..S..K..G=..S..D..K..#",
+  "#..D..V..G#..B..K..V..#",
+  "#P.....RRR...RRR.....P#",
+  "########################",
 ];
 
 export const officeMap = {

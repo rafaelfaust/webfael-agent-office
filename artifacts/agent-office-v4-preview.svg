@@ -1,0 +1,44 @@
+<svg width="1400" height="900" viewBox="0 0 1400 900" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#050505"/><stop offset=".55" stop-color="#101010"/><stop offset="1" stop-color="#020617"/></linearGradient>
+    <linearGradient id="panel" x1="0" x2="0" y1="0" y2="1"><stop stop-color="#232323"/><stop offset="1" stop-color="#0b0b0b"/></linearGradient>
+    <filter id="glow"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    <style>
+      .label{font-family:Arial,Helvetica,sans-serif;font-weight:900;fill:#f8fafc}.muted{fill:#a3a3a3;font-size:18px}.yellow{fill:#facc15}.small{font-size:14px}.room{font-size:13px;letter-spacing:1px}.tile{stroke:#171717;stroke-width:1}.wall{fill:#64748b}.floor{fill:#c9b98c}.rug{fill:#a16207}.desk{fill:#9a5a16}.pc{fill:#111827}.server{fill:#020617}.glass{fill:#7dd3fc;opacity:.55}.plant{fill:#16a34a}.agentText{font-size:11px;fill:#050505;font-weight:900}.chip{fill:#0f172a;stroke:#facc15;stroke-opacity:.35}
+    </style>
+  </defs>
+  <rect width="1400" height="900" fill="url(#bg)"/>
+  <circle cx="170" cy="110" r="210" fill="#facc15" opacity=".16" filter="url(#glow)"/>
+  <circle cx="1040" cy="720" r="250" fill="#38bdf8" opacity=".11" filter="url(#glow)"/>
+  <rect x="32" y="32" width="960" height="836" rx="32" fill="url(#panel)" stroke="#ffffff" stroke-opacity=".11"/>
+  <text x="64" y="82" class="label yellow small">WEBFAEL AGENT OFFICE · VISUAL V4</text>
+  <text x="64" y="128" class="label" font-size="44">Central operacional em 2D vivo</text>
+  <g transform="translate(64 170)">
+    <rect width="848" height="568" rx="26" fill="#0f172a" stroke="#facc15" stroke-opacity=".22"/>
+    <rect x="38" y="38" width="772" height="492" rx="18" fill="#121212" stroke="#facc15" stroke-opacity=".25"/>
+    <g transform="translate(58 58)">
+      <!-- simplified 24x12 tilemap preview -->
+      <script type="application/ecmascript"><![CDATA[]]></script>
+      <rect width="720" height="360" fill="#c9b98c"/>
+      <g opacity=".18" stroke="#000"><path d="M0 30h720M0 60h720M0 90h720M0 120h720M0 150h720M0 180h720M0 210h720M0 240h720M0 270h720M0 300h720M0 330h720M30 0v360M60 0v360M90 0v360M120 0v360M150 0v360M180 0v360M210 0v360M240 0v360M270 0v360M300 0v360M330 0v360M360 0v360M390 0v360M420 0v360M450 0v360M480 0v360M510 0v360M540 0v360M570 0v360M600 0v360M630 0v360M660 0v360M690 0v360"/></g>
+      <rect x="0" y="0" width="720" height="30" class="tile wall"/><rect x="0" y="330" width="720" height="30" class="tile wall"/><rect x="0" y="0" width="30" height="360" class="tile wall"/><rect x="690" y="0" width="30" height="360" class="tile wall"/>
+      <rect x="300" y="0" width="30" height="150" class="tile glass"/><rect x="300" y="210" width="30" height="120" class="tile glass"/>
+      <rect x="330" y="120" width="60" height="90" class="tile rug" opacity=".7"/><rect x="180" y="120" width="90" height="30" class="tile rug" opacity=".7"/><rect x="420" y="120" width="90" height="30" class="tile rug" opacity=".7"/>
+      <rect x="180" y="30" width="30" height="30" class="tile pc"/><rect x="210" y="30" width="30" height="30" class="tile server"/><rect x="450" y="30" width="90" height="30" class="tile desk"/><rect x="90" y="210" width="60" height="30" class="tile pc"/><rect x="540" y="210" width="60" height="30" class="tile desk"/><rect x="570" y="270" width="60" height="30" class="tile server"/>
+      <circle cx="55" cy="55" r="12" class="plant"/><circle cx="655" cy="55" r="12" class="plant"/><circle cx="55" cy="305" r="12" class="plant"/><circle cx="655" cy="305" r="12" class="plant"/>
+      <g transform="translate(225 92)" filter="url(#glow)"><ellipse cx="0" cy="28" rx="21" ry="7" fill="#000" opacity=".45"/><rect x="-15" y="-2" width="30" height="36" rx="5" fill="#facc15"/><circle cy="-12" r="13" fill="#f6cda8"/><rect x="-11" y="-23" width="22" height="9" rx="3" fill="#111827"/><text x="0" y="20" text-anchor="middle" class="agentText">CEO</text></g>
+      <g transform="translate(120 252)" filter="url(#glow)"><ellipse cx="0" cy="28" rx="21" ry="7" fill="#000" opacity=".45"/><rect x="-15" y="-2" width="30" height="36" rx="5" fill="#38bdf8"/><circle cy="-12" r="13" fill="#f6cda8"/><rect x="-11" y="-23" width="22" height="9" rx="3" fill="#111827"/><text x="0" y="20" text-anchor="middle" class="agentText">IX</text></g>
+      <g transform="translate(390 252)" filter="url(#glow)"><ellipse cx="0" cy="28" rx="21" ry="7" fill="#000" opacity=".45"/><rect x="-15" y="-2" width="30" height="36" rx="5" fill="#fb7185"/><circle cy="-12" r="13" fill="#f6cda8"/><rect x="-11" y="-23" width="22" height="9" rx="3" fill="#111827"/><text x="0" y="20" text-anchor="middle" class="agentText">RF</text></g>
+      <g transform="translate(480 92)" filter="url(#glow)"><ellipse cx="0" cy="28" rx="21" ry="7" fill="#000" opacity=".45"/><rect x="-15" y="-2" width="30" height="36" rx="5" fill="#a78bfa"/><circle cy="-12" r="13" fill="#f6cda8"/><rect x="-11" y="-23" width="22" height="9" rx="3" fill="#111827"/><text x="0" y="20" text-anchor="middle" class="agentText">LIA</text></g>
+      <text x="80" y="22" class="label yellow room">COMANDO</text><text x="430" y="22" class="label yellow room">COMERCIAL</text><text x="80" y="346" class="label yellow room">LAB TÉCNICO</text><text x="430" y="346" class="label yellow room">ESTÚDIO</text>
+    </g>
+  </g>
+  <g transform="translate(1020 32)">
+    <rect width="348" height="836" rx="28" fill="url(#panel)" stroke="#ffffff" stroke-opacity=".11"/>
+    <text x="28" y="54" class="label yellow small">HUD</text><text x="28" y="88" class="label" font-size="28">Operação Webfael</text><text x="28" y="116" class="muted">salas, status, tarefas e agentes vivos</text>
+    <g transform="translate(28 150)"><rect width="292" height="82" rx="18" class="chip"/><text x="18" y="32" class="label" font-size="24">WebIxtepo</text><text x="18" y="58" class="muted small">Executando · Buildando · 88%</text></g>
+    <g transform="translate(28 258)"><text class="label yellow small">PAINEL DE ENTREGAS</text><rect y="22" width="292" height="62" rx="14" fill="#ffffff" opacity=".05"/><text x="14" y="58" class="label small">Agent Office V4</text><rect x="14" y="70" width="220" height="7" rx="4" fill="#facc15"/><text x="246" y="58" class="label yellow small">92%</text><rect y="98" width="292" height="62" rx="14" fill="#ffffff" opacity=".05"/><text x="14" y="134" class="label small">Pipeline SDR</text><rect x="14" y="146" width="154" height="7" rx="4" fill="#facc15"/><text x="246" y="134" class="label yellow small">64%</text></g>
+    <g transform="translate(28 464)"><text class="label yellow small">MÉTRICAS</text><rect y="22" width="135" height="86" rx="18" fill="#ffffff" opacity=".05"/><text x="16" y="58" class="label" font-size="26">7</text><text x="16" y="84" class="muted small">Entregas hoje</text><rect x="156" y="22" width="135" height="86" rx="18" fill="#ffffff" opacity=".05"/><text x="172" y="58" class="label" font-size="26">18</text><text x="172" y="84" class="muted small">Tarefas ativas</text></g>
+    <g transform="translate(28 625)"><rect width="292" height="160" rx="20" fill="#facc15" opacity=".09" stroke="#facc15" stroke-opacity=".25"/><text x="18" y="38" class="label yellow">V4 concreta</text><text x="18" y="72" class="muted small">Mapa mais rico, sprites CSS detalhados,</text><text x="18" y="96" class="muted small">HUD lateral, status operacional e</text><text x="18" y="120" class="muted small">evidência em SVG sem API paga.</text></g>
+  </g>
+</svg>
