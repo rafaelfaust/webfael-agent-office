@@ -138,6 +138,93 @@ function MiniMap() {
   );
 }
 
+function BrandCard() {
+  return (
+    <div className="hud-card brand-card compact-card">
+      <span className="kicker">HUD</span>
+      <strong>Operação Webfael</strong>
+      <small>{officeMap.cols}x{officeMap.rows} tiles · visual validável no mapa, sem card lateral roubando espaço</small>
+      <MiniMap />
+    </div>
+  );
+}
+
+function SelectedAgentCard({ selected }: { selected: Agent }) {
+  return (
+    <div className="hud-card selected-card priority-card">
+      <p className="hud-label">Agente selecionado</p>
+      <div className="selected-card-head">
+        <h2>{selected.name}</h2>
+        <div className="selected-meta">
+          <span className={`badge ${selected.status}`}>{statusLabel[selected.status]}</span>
+          <span className={`risk risk-${selected.risk}`}>Risco {selected.risk}</span>
+          <span className="mood">{selected.mood}</span>
+        </div>
+      </div>
+      <dl className="selected-summary">
+        <div><dt>Função</dt><dd>{selected.role}</dd></div>
+        <div><dt>Base</dt><dd>{selected.room} · X{selected.grid.x}/Y{selected.grid.y}</dd></div>
+        <div><dt>Agora</dt><dd>{selected.task}</dd></div>
+      </dl>
+      <div className="agent-meters inline-meters">
+        <LimitMeter value={selected.tokenUsage} limit={selected.contextLimit} />
+        <div className="automation-meter">
+          <span><b>{selected.automationScore}%</b> automação operacional</span>
+          <i style={{ "--auto": `${selected.automationScore}%` } as CSSProperties} />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function RosterCard({ selectedId, onSelect }: { selectedId: string; onSelect: (id: string) => void }) {
+  return (
+    <div className="hud-card roster-card">
+      <p className="hud-label">Agentes</p>
+      <div className="roster">
+        {agents.map((agent) => (
+          <AgentRow key={agent.id} agent={agent} selected={agent.id === selectedId} onClick={() => onSelect(agent.id)} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function DeliveryCard() {
+  return (
+    <div className="hud-card delivery-card">
+      <p className="hud-label">Painel de entregas</p>
+      <div className="delivery-list">
+        {deliveryBoard.map((item) => (
+          <article key={item.title}>
+            <div>
+              <strong>{item.title}</strong>
+              <small>{item.owner} · {item.state}</small>
+            </div>
+            <span>{item.progress}%</span>
+            <i style={{ "--progress": `${item.progress}%` } as CSSProperties} />
+          </article>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function LimitNoteCard({ selected }: { selected: Agent }) {
+  return (
+    <div className="hud-card note-card">
+      <strong>Fila e limite operacional</strong>
+      <div className="queue-list compact-queue">
+        {selected.queue.map((item) => <span key={item}>{item}</span>)}
+      </div>
+      <p>Limite local/estimado. Se for limite real de modelo/API, depende do provedor; mitigação curta: resumir contexto, quebrar tarefas e salvar estado.</p>
+      <ul>
+        {limitPolicy.mitigation.map((item) => <li key={item}>{item}</li>)}
+      </ul>
+    </div>
+  );
+}
+
 export function Office() {
   const [selectedId, setSelectedId] = useState(agents[0].id);
   const selected = agents.find((agent) => agent.id === selectedId) ?? agents[0];
@@ -158,15 +245,17 @@ export function Office() {
           </div>
         </div>
 
-        <SquadMatrix selectedId={selectedId} onSelect={setSelectedId} />
-
-        <div className="ops-strip">
-          {operations.map((op) => (
-            <div className={`op-card ${op.tone}`} key={op.label}>
-              <strong>{op.value}</strong>
-              <span>{op.label}</span>
-            </div>
-          ))}
+        <div className="priority-dashboard">
+          <SelectedAgentCard selected={selected} />
+          <div className="ops-strip">
+            {operations.map((op) => (
+              <div className={`op-card ${op.tone}`} key={op.label}>
+                <strong>{op.value}</strong>
+                <span>{op.label}</span>
+              </div>
+            ))}
+          </div>
+          <BrandCard />
         </div>
 
         <div className="map-viewport">
@@ -205,74 +294,17 @@ export function Office() {
             </div>
           </div>
         </div>
+
+        <div className="support-dashboard">
+          <div className="hud-card squad-dashboard-card">
+            <p className="hud-label">Matriz dos agentes</p>
+            <SquadMatrix selectedId={selectedId} onSelect={setSelectedId} />
+          </div>
+          <RosterCard selectedId={selectedId} onSelect={setSelectedId} />
+          <DeliveryCard />
+          <LimitNoteCard selected={selected} />
+        </div>
       </section>
-
-      <aside className="hud-panel">
-        <div className="hud-card brand-card">
-          <span className="kicker">HUD</span>
-          <strong>Operação Webfael</strong>
-          <small>{officeMap.cols}x{officeMap.rows} tiles · V6 com sala jogável, props CSS e execução sem custo externo</small>
-          <MiniMap />
-        </div>
-
-        <div className="hud-card selected-card">
-          <p className="hud-label">Agente selecionado</p>
-          <h2>{selected.name}</h2>
-          <div className="selected-meta">
-            <span className={`badge ${selected.status}`}>{statusLabel[selected.status]}</span>
-            <span className={`risk risk-${selected.risk}`}>Risco {selected.risk}</span>
-            <span className="mood">{selected.mood}</span>
-          </div>
-          <dl>
-            <div><dt>Função</dt><dd>{selected.role}</dd></div>
-            <div><dt>Base</dt><dd>{selected.room} · X{selected.grid.x}/Y{selected.grid.y}</dd></div>
-            <div><dt>Agora</dt><dd>{selected.task}</dd></div>
-          </dl>
-          <div className="agent-meters">
-            <LimitMeter value={selected.tokenUsage} limit={selected.contextLimit} />
-            <div className="automation-meter">
-              <span><b>{selected.automationScore}%</b> automação operacional</span>
-              <i style={{ "--auto": `${selected.automationScore}%` } as CSSProperties} />
-            </div>
-          </div>
-          <div className="queue-list">
-            {selected.queue.map((item) => <span key={item}>{item}</span>)}
-          </div>
-        </div>
-
-        <div className="hud-card roster-card">
-          <p className="hud-label">Agentes</p>
-          <div className="roster">
-            {agents.map((agent) => (
-              <AgentRow key={agent.id} agent={agent} selected={agent.id === selectedId} onClick={() => setSelectedId(agent.id)} />
-            ))}
-          </div>
-        </div>
-
-        <div className="hud-card delivery-card">
-          <p className="hud-label">Painel de entregas</p>
-          <div className="delivery-list">
-            {deliveryBoard.map((item) => (
-              <article key={item.title}>
-                <div>
-                  <strong>{item.title}</strong>
-                  <small>{item.owner} · {item.state}</small>
-                </div>
-                <span>{item.progress}%</span>
-                <i style={{ "--progress": `${item.progress}%` } as CSSProperties} />
-              </article>
-            ))}
-          </div>
-        </div>
-
-        <div className="hud-card note-card">
-          <strong>V6 pronta para validação</strong>
-          <p>O painel de limite é local/estimado. Se o limite citado pelo Rafael for de modelo/API, ele depende do provedor; mitigação curta: resumir contexto, quebrar tarefas e salvar estado em arquivo/commit.</p>
-          <ul>
-            {limitPolicy.mitigation.map((item) => <li key={item}>{item}</li>)}
-          </ul>
-        </div>
-      </aside>
     </main>
   );
 }
