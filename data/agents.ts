@@ -12,6 +12,10 @@ export type Agent = {
   color: string;
   initials: string;
   load: number;
+  tokenUsage: number;
+  contextLimit: number;
+  automationScore: number;
+  risk: "baixo" | "medio" | "alto";
   mood: string;
   queue: string[];
 };
@@ -34,8 +38,12 @@ export const agents: Agent[] = [
     color: "#facc15",
     initials: "CEO",
     load: 76,
+    tokenUsage: 11800,
+    contextLimit: 16000,
+    automationScore: 81,
+    risk: "medio",
     mood: "Modo comando",
-    queue: ["Prioridade do dia", "Risco de entrega", "Handoff técnico"],
+    queue: ["Prioridade do dia", "Risco de entrega", "Handoff técnico", "Limite sob controle"],
   },
   {
     id: "webixtepo",
@@ -43,7 +51,7 @@ export const agents: Agent[] = [
     role: "Fullstack, automações, IA e infraestrutura",
     room: "Laboratório Técnico",
     status: "executando",
-    task: "Fechando V4 visual do Agent Office",
+    task: "Entregando V5 premium do Agent Office",
     grid: { x: 4, y: 8 },
     workPath: [
       { x: 4, y: 8 },
@@ -54,8 +62,12 @@ export const agents: Agent[] = [
     color: "#38bdf8",
     initials: "IX",
     load: 88,
+    tokenUsage: 14100,
+    contextLimit: 16000,
+    automationScore: 92,
+    risk: "alto",
     mood: "Buildando",
-    queue: ["Sprites CSS", "HUD operacional", "Preview evidenciável"],
+    queue: ["V5 visual", "HUD de limites", "Build verde", "Sem API paga"],
   },
   {
     id: "webrafa",
@@ -74,6 +86,10 @@ export const agents: Agent[] = [
     color: "#fb7185",
     initials: "RF",
     load: 54,
+    tokenUsage: 7200,
+    contextLimit: 16000,
+    automationScore: 68,
+    risk: "baixo",
     mood: "Em criação",
     queue: ["Storytelling", "Reels/preview", "Tom da marca"],
   },
@@ -94,28 +110,43 @@ export const agents: Agent[] = [
     color: "#a78bfa",
     initials: "LIA",
     load: 63,
+    tokenUsage: 9800,
+    contextLimit: 16000,
+    automationScore: 74,
+    risk: "medio",
     mood: "Prospectando",
     queue: ["Leads PMEs", "Follow-up", "Diagnóstico"],
   },
 ];
 
 export const operations = [
-  { label: "Entregas hoje", value: "7", tone: "green" },
-  { label: "Tarefas ativas", value: "18", tone: "yellow" },
-  { label: "Bloqueios", value: "1", tone: "red" },
-  { label: "Recorrência foco", value: "R$50k", tone: "blue" },
+  { label: "Entregas hoje", value: "9", tone: "green" },
+  { label: "Tarefas ativas", value: "21", tone: "yellow" },
+  { label: "Limite médio", value: "67%", tone: "red" },
+  { label: "Automação", value: "79%", tone: "blue" },
 ];
 
 export const deliveryBoard = [
-  { title: "Agent Office V4", owner: "WebIxtepo", state: "Em validação", progress: 92 },
+  { title: "Agent Office V5", owner: "WebIxtepo", state: "Entrega hoje", progress: 96 },
   { title: "Pipeline SDR", owner: "WebLia", state: "Rodando", progress: 64 },
   { title: "Conteúdo premium", owner: "WebRafa", state: "Roteiro", progress: 48 },
   { title: "Prioridade semanal", owner: "WebCEO", state: "Decisão", progress: 78 },
 ];
 
+export const limitPolicy = {
+  source: "Estimativa local sem API paga",
+  warning: 75,
+  danger: 88,
+  mitigation: [
+    "Resumir contexto antes de estourar janela",
+    "Quebrar execução longa em handoffs menores",
+    "Registrar estado em arquivo/commit em vez de depender do chat",
+  ],
+};
+
 export const metrics = [
   { label: "Agentes no mapa", value: String(agents.length) },
   { label: "Formato visual", value: "Top-down" },
-  { label: "Mapa", value: "Tilemap V4" },
+  { label: "Mapa", value: "Tilemap V5" },
   { label: "Status operação", value: "Online" },
 ];

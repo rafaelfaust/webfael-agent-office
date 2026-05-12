@@ -1,7 +1,7 @@
 "use client";
 
 import { CSSProperties, useMemo, useState } from "react";
-import { Agent, agents, deliveryBoard, operations } from "@/data/agents";
+import { Agent, agents, deliveryBoard, limitPolicy, operations } from "@/data/agents";
 import { officeMap, tileDefinitions, tileTheme } from "@/data/officeMap";
 
 const statusLabel = {
@@ -17,6 +17,21 @@ const statusClass = {
   bloqueado: "status blocked",
   online: "status online",
 };
+
+const pct = (value: number, total: number) => Math.min(100, Math.round((value / total) * 100));
+
+function LimitMeter({ value, limit }: { value: number; limit: number }) {
+  const percent = pct(value, limit);
+  const tone = percent >= limitPolicy.danger ? "danger" : percent >= limitPolicy.warning ? "warn" : "safe";
+
+  return (
+    <div className={`limit-meter ${tone}`}>
+      <span><b>{percent}%</b> contexto</span>
+      <i style={{ "--limit": `${percent}%` } as CSSProperties} />
+      <small>{value.toLocaleString("pt-BR")} / {limit.toLocaleString("pt-BR")} tokens estimados</small>
+    </div>
+  );
+}
 
 function AgentAvatar({ agent, selected, onClick }: { agent: Agent; selected: boolean; onClick: () => void }) {
   const path = agent.workPath.length ? agent.workPath : [agent.grid];
@@ -60,15 +75,31 @@ function AgentAvatar({ agent, selected, onClick }: { agent: Agent; selected: boo
 }
 
 function AgentRow({ agent, selected, onClick }: { agent: Agent; selected: boolean; onClick: () => void }) {
+  const usage = pct(agent.tokenUsage, agent.contextLimit);
   return (
     <button className={`agent-row ${selected ? "active" : ""}`} onClick={onClick}>
       <span className="agent-dot" style={{ background: agent.color }} />
       <span>
         <strong>{agent.name}</strong>
-        <small>{statusLabel[agent.status]} · {agent.room}</small>
+        <small>{statusLabel[agent.status]} · limite {usage}% · {agent.room}</small>
       </span>
       <span className="agent-load" style={{ "--load": `${agent.load}%` } as CSSProperties} />
     </button>
+  );
+}
+
+function SquadMatrix({ selectedId, onSelect }: { selectedId: string; onSelect: (id: string) => void }) {
+  return (
+    <div className="squad-matrix">
+      {agents.map((agent) => (
+        <button key={agent.id} className={`squad-card ${agent.id === selectedId ? "active" : ""}`} onClick={() => onSelect(agent.id)}>
+          <span style={{ "--agent-color": agent.color } as CSSProperties}>{agent.initials}</span>
+          <strong>{agent.name}</strong>
+          <small>{agent.task}</small>
+          <i style={{ "--auto": `${agent.automationScore}%` } as CSSProperties} />
+        </button>
+      ))}
+    </div>
   );
 }
 
@@ -85,6 +116,8 @@ function MiniMap() {
 export function Office() {
   const [selectedId, setSelectedId] = useState(agents[0].id);
   const selected = agents.find((agent) => agent.id === selectedId) ?? agents[0];
+  const averageLimit = Math.round(agents.reduce((sum, agent) => sum + pct(agent.tokenUsage, agent.contextLimit), 0) / agents.length);
+  const activeAgents = agents.filter((agent) => agent.status === "executando").length;
 
   return (
     <main className="game-shell">
@@ -96,9 +129,11 @@ export function Office() {
           </div>
           <div className="topbar-actions">
             <div className="topbar-chip"><span /> Operação online</div>
-            <div className="topbar-chip ghost">24x12 tiles · preview evidenciável</div>
+            <div className="topbar-chip ghost">{activeAgents}/{agents.length} agentes executando · limite médio {averageLimit}%</div>
           </div>
         </div>
+
+        <SquadMatrix selectedId={selectedId} onSelect={setSelectedId} />
 
         <div className="ops-strip">
           {operations.map((op) => (
@@ -153,7 +188,7 @@ export function Office() {
         <div className="hud-card brand-card">
           <span className="kicker">HUD</span>
           <strong>Operação Webfael</strong>
-          <small>{officeMap.cols}x{officeMap.rows} tiles · salas, corredores, tarefas e agentes vivos</small>
+          <small>{officeMap.cols}x{officeMap.rows} tiles · V5 com HUD de uso, risco e execução sem custo externo</small>
           <MiniMap />
         </div>
 
@@ -162,6 +197,7 @@ export function Office() {
           <h2>{selected.name}</h2>
           <div className="selected-meta">
             <span className={`badge ${selected.status}`}>{statusLabel[selected.status]}</span>
+            <span className={`risk risk-${selected.risk}`}>Risco {selected.risk}</span>
             <span className="mood">{selected.mood}</span>
           </div>
           <dl>
@@ -169,6 +205,13 @@ export function Office() {
             <div><dt>Base</dt><dd>{selected.room} · X{selected.grid.x}/Y{selected.grid.y}</dd></div>
             <div><dt>Agora</dt><dd>{selected.task}</dd></div>
           </dl>
+          <div className="agent-meters">
+            <LimitMeter value={selected.tokenUsage} limit={selected.contextLimit} />
+            <div className="automation-meter">
+              <span><b>{selected.automationScore}%</b> automação operacional</span>
+              <i style={{ "--auto": `${selected.automationScore}%` } as CSSProperties} />
+            </div>
+          </div>
           <div className="queue-list">
             {selected.queue.map((item) => <span key={item}>{item}</span>)}
           </div>
@@ -200,8 +243,11 @@ export function Office() {
         </div>
 
         <div className="hud-card note-card">
-          <strong>V4 entregue</strong>
-          <p>Mapa mais rico, sprites CSS detalhados, status por agente, métricas e quadro de entregas. Base pronta para trocar CSS sprites por PNG/SVG reais depois.</p>
+          <strong>V5 pronta para validação</strong>
+          <p>O painel de limite é local/estimado. Se o limite citado pelo Rafael for de modelo/API, ele depende do provedor; mitigação curta: resumir contexto, quebrar tarefas e salvar estado em arquivo/commit.</p>
+          <ul>
+            {limitPolicy.mitigation.map((item) => <li key={item}>{item}</li>)}
+          </ul>
         </div>
       </aside>
     </main>
