@@ -33,8 +33,8 @@ export type Tile = {
 
 export const tileTheme = {
   name: "Webfael Agent Office",
-  subtitle: "Central tática premium dos agentes",
-  version: "Visual V5",
+  subtitle: "QG jogável dos agentes Webfael",
+  version: "Visual V6",
   tileSize: 42,
   palette: {
     floor: "#c9b98c",

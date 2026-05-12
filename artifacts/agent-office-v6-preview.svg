@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="720" viewBox="0 0 1200 720">
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#050505"/><stop offset=".55" stop-color="#111827"/><stop offset="1" stop-color="#050505"/></linearGradient>
+    <linearGradient id="floor" x1="0" x2="1"><stop stop-color="#c9b98c"/><stop offset="1" stop-color="#9f854e"/></linearGradient>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="170%"><feDropShadow dx="0" dy="18" stdDeviation="16" flood-color="#000" flood-opacity=".55"/></filter>
+    <pattern id="grid" width="42" height="42" patternUnits="userSpaceOnUse"><path d="M42 0H0v42" fill="none" stroke="#000" stroke-opacity=".18"/><path d="M0 0h42v42H0z" fill="none" stroke="#fff" stroke-opacity=".08"/></pattern>
+  </defs>
+  <rect width="1200" height="720" fill="url(#bg)"/>
+  <circle cx="220" cy="110" r="230" fill="#facc15" opacity=".13"/>
+  <circle cx="980" cy="610" r="260" fill="#38bdf8" opacity=".10"/>
+  <text x="70" y="72" fill="#facc15" font-family="Arial" font-size="15" font-weight="900" letter-spacing="4">WEBFAEL AGENT OFFICE · VISUAL V6</text>
+  <text x="70" y="118" fill="#fff" font-family="Arial" font-size="42" font-weight="900">QG jogável dos agentes</text>
+  <g transform="translate(116 154) rotate(-.5)" filter="url(#shadow)">
+    <rect x="0" y="0" width="1010" height="510" rx="34" fill="#17110a"/>
+    <rect x="0" y="-16" width="1010" height="500" rx="34" fill="#33250d" stroke="#facc15" stroke-opacity=".35"/>
+    <rect x="46" y="34" width="918" height="414" fill="url(#floor)"/>
+    <rect x="46" y="34" width="918" height="414" fill="url(#grid)"/>
+    <path d="M46 34h918v42H46zM46 406h918v42H46zM46 34h42v414H46zM922 34h42v414h-42z" fill="#475569" stroke="#020617" stroke-opacity=".35"/>
+    <path d="M88 76h340v126H88z" fill="#facc15" opacity=".06"/><path d="M586 76h336v126H586z" fill="#a78bfa" opacity=".07"/><path d="M88 286h340v120H88z" fill="#38bdf8" opacity=".07"/><path d="M586 286h336v120H586z" fill="#fb7185" opacity=".07"/>
+    <g fill="#111827" stroke="#facc15" stroke-opacity=".32"><rect x="268" y="78" width="42" height="42" rx="6"/><rect x="648" y="78" width="42" height="42" rx="6"/><rect x="226" y="330" width="42" height="42" rx="6"/><rect x="690" y="330" width="42" height="42" rx="6"/></g>
+    <g fill="#b45309"><rect x="172" y="118" width="86" height="42" rx="7"/><rect x="704" y="118" width="126" height="42" rx="7"/><rect x="172" y="328" width="92" height="42" rx="7"/><rect x="704" y="328" width="92" height="42" rx="7"/></g>
+    <path d="M428 34v414" stroke="#bae6fd" stroke-width="12" opacity=".42"/><path d="M586 34v414" stroke="#bae6fd" stroke-width="12" opacity=".35"/>
+    <path d="M358 238h250" stroke="#facc15" stroke-width="6" opacity=".75"/><path d="M506 198v124" stroke="#38bdf8" stroke-width="5" opacity=".65"/>
+    <g font-family="Arial" font-size="11" font-weight="900" fill="#fde68a"><text x="128" y="64">COMANDO</text><text x="654" y="64">COMERCIAL</text><text x="128" y="430">LAB</text><text x="654" y="430">ESTÚDIO</text></g>
+    <g font-family="Arial" font-weight="900" text-anchor="middle">
+      <ellipse cx="352" cy="162" rx="28" ry="10" fill="#000" opacity=".38"/><rect x="334" y="105" width="36" height="55" rx="7" fill="#facc15"/><circle cx="352" cy="98" r="17" fill="#f6cda8"/><rect x="331" y="82" width="42" height="14" rx="5" fill="#1f2937"/><text x="352" y="138" font-size="10" fill="#050505">CEO</text>
+      <ellipse cx="230" cy="372" rx="28" ry="10" fill="#000" opacity=".38"/><rect x="212" y="315" width="36" height="55" rx="7" fill="#38bdf8"/><circle cx="230" cy="308" r="17" fill="#f6cda8"/><rect x="209" y="292" width="42" height="14" rx="5" fill="#0f172a"/><text x="230" y="348" font-size="10" fill="#050505">IX</text>
+      <ellipse cx="694" cy="372" rx="28" ry="10" fill="#000" opacity=".38"/><rect x="676" y="315" width="36" height="55" rx="7" fill="#fb7185"/><circle cx="694" cy="308" r="17" fill="#f6cda8"/><rect x="673" y="292" width="42" height="14" rx="5" fill="#7f1d1d"/><text x="694" y="348" font-size="10" fill="#050505">RF</text>
+      <ellipse cx="760" cy="162" rx="28" ry="10" fill="#000" opacity=".38"/><rect x="742" y="105" width="36" height="55" rx="7" fill="#a78bfa"/><circle cx="760" cy="98" r="17" fill="#f6cda8"/><rect x="739" y="82" width="42" height="14" rx="5" fill="#3b0764"/><text x="760" y="138" font-size="10" fill="#050505">LIA</text>
+    </g>
+  </g>
+  <rect x="820" y="54" width="300" height="74" rx="20" fill="#020617" stroke="#facc15" stroke-opacity=".25"/>
+  <text x="848" y="84" fill="#facc15" font-family="Arial" font-size="13" font-weight="900">Preview artifact</text>
+  <text x="848" y="108" fill="#cbd5e1" font-family="Arial" font-size="15">Tilemap, profundidade, props e personagens CSS.</text>
+</svg>

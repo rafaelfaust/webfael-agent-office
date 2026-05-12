@@ -38,11 +38,12 @@ function AgentAvatar({ agent, selected, onClick }: { agent: Agent; selected: boo
 
   return (
     <button
-      className={`map-agent ${agent.status === "executando" ? "is-working" : ""} ${selected ? "selected" : ""}`}
+      className={`map-agent agent-${agent.id} ${agent.status === "executando" ? "is-working" : ""} ${selected ? "selected" : ""}`}
       style={{
         "--agent-color": agent.color,
         "--agent-x": agent.grid.x,
         "--agent-y": agent.grid.y,
+        "--agent-z": 20 + agent.grid.y,
         "--p0x": path[0]?.x ?? agent.grid.x,
         "--p0y": path[0]?.y ?? agent.grid.y,
         "--p1x": path[1]?.x ?? path[0]?.x ?? agent.grid.x,
@@ -55,6 +56,7 @@ function AgentAvatar({ agent, selected, onClick }: { agent: Agent; selected: boo
       onClick={onClick}
       aria-label={`Selecionar ${agent.name}`}
     >
+      <span className="agent-task-bubble">{agent.task}</span>
       <span className="agent-nameplate">
         <span className={statusClass[agent.status]} />
         {agent.name}
@@ -63,6 +65,7 @@ function AgentAvatar({ agent, selected, onClick }: { agent: Agent; selected: boo
       <span className="agent-sprite" aria-hidden="true">
         <span className="agent-hair" />
         <span className="agent-face"><i /><b /></span>
+        <span className="agent-headset" />
         <span className="agent-ear left" />
         <span className="agent-ear right" />
         <span className="agent-torso">{agent.initials}</span>
@@ -71,6 +74,28 @@ function AgentAvatar({ agent, selected, onClick }: { agent: Agent; selected: boo
         <span className="agent-legs" />
       </span>
     </button>
+  );
+}
+
+function WorldProps() {
+  return (
+    <div className="world-props" aria-hidden="true">
+      <span className="prop neon-route route-a" />
+      <span className="prop neon-route route-b" />
+      <span className="prop light-cone command" />
+      <span className="prop light-cone sales" />
+      <span className="prop light-cone lab" />
+      <span className="prop wall-depth north" />
+      <span className="prop wall-depth west" />
+      <span className="prop glass-reflection command" />
+      <span className="prop glass-reflection studio" />
+      <span className="prop cable cable-a" />
+      <span className="prop cable cable-b" />
+      <span className="room-plaque plaque-command">COMANDO · prioridades</span>
+      <span className="room-plaque plaque-sales">COMERCIAL · leads</span>
+      <span className="room-plaque plaque-lab">LAB · builds</span>
+      <span className="room-plaque plaque-studio">ESTÚDIO · conteúdo</span>
+    </div>
   );
 }
 
@@ -155,10 +180,7 @@ export function Office() {
             aria-label="Mapa 2D top-down do escritório virtual da Webfael"
           >
             <div className="map-floor-glow" />
-            <div className="room-label command">Sala de comando</div>
-            <div className="room-label sales">Comercial</div>
-            <div className="room-label tech">Lab técnico</div>
-            <div className="room-label studio">Estúdio</div>
+            <WorldProps />
             <div className="tile-grid">
               {officeMap.tiles.map((tile) => {
                 const definition = tileDefinitions[tile.type];
@@ -166,6 +188,7 @@ export function Office() {
                   <div
                     key={tile.id}
                     className={`tile ${definition.className}`}
+                    style={{ "--tx": tile.x, "--ty": tile.y } as CSSProperties}
                     title={`${definition.label} (${tile.x}, ${tile.y})`}
                   >
                     {definition.glyph ? <span>{definition.glyph}</span> : null}
@@ -188,7 +211,7 @@ export function Office() {
         <div className="hud-card brand-card">
           <span className="kicker">HUD</span>
           <strong>Operação Webfael</strong>
-          <small>{officeMap.cols}x{officeMap.rows} tiles · V5 com HUD de uso, risco e execução sem custo externo</small>
+          <small>{officeMap.cols}x{officeMap.rows} tiles · V6 com sala jogável, props CSS e execução sem custo externo</small>
           <MiniMap />
         </div>
 
@@ -243,7 +266,7 @@ export function Office() {
         </div>
 
         <div className="hud-card note-card">
-          <strong>V5 pronta para validação</strong>
+          <strong>V6 pronta para validação</strong>
           <p>O painel de limite é local/estimado. Se o limite citado pelo Rafael for de modelo/API, ele depende do provedor; mitigação curta: resumir contexto, quebrar tarefas e salvar estado em arquivo/commit.</p>
           <ul>
             {limitPolicy.mitigation.map((item) => <li key={item}>{item}</li>)}
