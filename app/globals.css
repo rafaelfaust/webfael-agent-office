@@ -443,3 +443,100 @@ dl { margin: 0; display: grid; gap: 14px; } dt { color: var(--muted); font-size:
   0%, 100% { filter: brightness(1); }
   50% { filter: brightness(1.16) saturate(1.15); }
 }
+
+/* V8 - imagem real como cenário; CSS fica só como HUD/interação */
+.image-viewport {
+  min-height: auto;
+  padding: 18px;
+  background: radial-gradient(circle at 50% 30%, rgba(250,204,21,.14), transparent 36rem), #020617;
+}
+
+.agent-room-scene {
+  position: relative;
+  width: min(100%, 1480px);
+  aspect-ratio: 16 / 9;
+  margin: 0 auto;
+  overflow: hidden;
+  border-radius: 30px;
+  border: 1px solid rgba(250,204,21,.32);
+  background: #020617;
+  box-shadow: 0 44px 120px rgba(0,0,0,.72), inset 0 0 0 1px rgba(255,255,255,.06);
+}
+
+.room-background {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  user-select: none;
+  pointer-events: none;
+}
+
+.scene-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.scene-agent {
+  position: absolute;
+  left: var(--scene-x);
+  top: var(--scene-y);
+  width: clamp(74px, 8vw, 138px);
+  aspect-ratio: 220 / 300;
+  transform: translate(-50%, -50%) scale(var(--scene-scale));
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  pointer-events: auto;
+  filter: drop-shadow(0 18px 16px rgba(0,0,0,.5));
+  transition: transform .18s ease, filter .18s ease;
+}
+
+.scene-agent:hover,
+.scene-agent.selected {
+  transform: translate(-50%, -54%) scale(calc(var(--scene-scale) * 1.08));
+  filter: drop-shadow(0 0 22px color-mix(in srgb, var(--agent-color), transparent 20%)) drop-shadow(0 22px 18px rgba(0,0,0,.55));
+}
+
+.agent-image {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.scene-agent .agent-nameplate {
+  top: -18px;
+  z-index: 3;
+  border-color: color-mix(in srgb, var(--agent-color), transparent 35%);
+}
+
+.scene-agent .agent-task-bubble {
+  top: -58px;
+  z-index: 4;
+}
+
+.scene-hud {
+  position: absolute;
+  z-index: 4;
+  top: 18px;
+  padding: 10px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(250,204,21,.28);
+  background: rgba(2,6,23,.72);
+  color: #fde68a;
+  font-size: 11px;
+  font-weight: 950;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  backdrop-filter: blur(10px);
+}
+.scene-hud-left { left: 18px; }
+.scene-hud-right { right: 18px; color: #bae6fd; border-color: rgba(34,211,238,.28); }
+
+@media (max-width: 760px) {
+  .image-viewport { padding: 8px; overflow-x: auto; }
+  .agent-room-scene { width: 900px; max-width: none; border-radius: 20px; }
+  .scene-agent .agent-nameplate { font-size: 10px; }
+}

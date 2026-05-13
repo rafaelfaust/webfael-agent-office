@@ -2,7 +2,7 @@
 
 import { CSSProperties, useMemo, useState } from "react";
 import { Agent, agents, deliveryBoard, limitPolicy, operations } from "@/data/agents";
-import { officeMap, tileDefinitions, tileTheme } from "@/data/officeMap";
+import { officeMap, tileTheme } from "@/data/officeMap";
 
 const statusLabel = {
   executando: "Executando",
@@ -20,6 +20,13 @@ const statusClass = {
 
 const pct = (value: number, total: number) => Math.min(100, Math.round((value / total) * 100));
 
+const scenePositions: Record<string, { x: number; y: number; scale?: number }> = {
+  webceo: { x: 46, y: 43, scale: 1.02 },
+  weblia: { x: 73, y: 43, scale: 1 },
+  webixtepo: { x: 28, y: 72, scale: 1.04 },
+  webrafa: { x: 72, y: 72, scale: 1.04 },
+};
+
 function LimitMeter({ value, limit }: { value: number; limit: number }) {
   const percent = pct(value, limit);
   const tone = percent >= limitPolicy.danger ? "danger" : percent >= limitPolicy.warning ? "warn" : "safe";
@@ -34,24 +41,16 @@ function LimitMeter({ value, limit }: { value: number; limit: number }) {
 }
 
 function AgentAvatar({ agent, selected, onClick }: { agent: Agent; selected: boolean; onClick: () => void }) {
-  const path = agent.workPath.length ? agent.workPath : [agent.grid];
+  const position = scenePositions[agent.id] ?? { x: 50, y: 50, scale: 1 };
 
   return (
     <button
-      className={`map-agent agent-${agent.id} ${agent.status === "executando" ? "is-working" : ""} ${selected ? "selected" : ""}`}
+      className={`scene-agent agent-${agent.id} ${agent.status === "executando" ? "is-working" : ""} ${selected ? "selected" : ""}`}
       style={{
         "--agent-color": agent.color,
-        "--agent-x": agent.grid.x,
-        "--agent-y": agent.grid.y,
-        "--agent-z": 20 + agent.grid.y,
-        "--p0x": path[0]?.x ?? agent.grid.x,
-        "--p0y": path[0]?.y ?? agent.grid.y,
-        "--p1x": path[1]?.x ?? path[0]?.x ?? agent.grid.x,
-        "--p1y": path[1]?.y ?? path[0]?.y ?? agent.grid.y,
-        "--p2x": path[2]?.x ?? path[0]?.x ?? agent.grid.x,
-        "--p2y": path[2]?.y ?? path[0]?.y ?? agent.grid.y,
-        "--p3x": path[3]?.x ?? path[0]?.x ?? agent.grid.x,
-        "--p3y": path[3]?.y ?? path[0]?.y ?? agent.grid.y,
+        "--scene-x": `${position.x}%`,
+        "--scene-y": `${position.y}%`,
+        "--scene-scale": position.scale ?? 1,
       } as CSSProperties}
       onClick={onClick}
       aria-label={`Selecionar ${agent.name}`}
@@ -61,18 +60,7 @@ function AgentAvatar({ agent, selected, onClick }: { agent: Agent; selected: boo
         <span className={statusClass[agent.status]} />
         {agent.name}
       </span>
-      <span className="agent-shadow" />
-      <span className="agent-sprite" aria-hidden="true">
-        <span className="agent-hair" />
-        <span className="agent-face"><i /><b /></span>
-        <span className="agent-headset" />
-        <span className="agent-ear left" />
-        <span className="agent-ear right" />
-        <span className="agent-torso">{agent.initials}</span>
-        <span className="agent-arm left" />
-        <span className="agent-arm right" />
-        <span className="agent-legs" />
-      </span>
+      <img className="agent-image" src={`/agents/${agent.id}.png`} alt="" aria-hidden="true" />
     </button>
   );
 }
@@ -267,40 +255,17 @@ export function Office() {
           <BrandCard />
         </div>
 
-        <div className="map-viewport">
+        <div className="map-viewport image-viewport">
           <div className="viewport-scanline" />
-          <div
-            className="tile-map"
-            style={{
-              "--cols": officeMap.cols,
-              "--rows": officeMap.rows,
-            } as CSSProperties}
-            aria-label="Mapa 2D top-down do escritório virtual da Webfael"
-          >
-            <div className="map-floor-glow" />
-            <WorldProps />
-            <div className="tile-grid">
-              {officeMap.tiles.map((tile) => {
-                const definition = tileDefinitions[tile.type];
-                return (
-                  <div
-                    key={tile.id}
-                    className={`tile ${definition.className}`}
-                    style={{ "--tx": tile.x, "--ty": tile.y } as CSSProperties}
-                    title={`${definition.label} (${tile.x}, ${tile.y})`}
-                  >
-                    {definition.glyph ? <span>{definition.glyph}</span> : null}
-                    {tile.zone ? <em>{tile.zone}</em> : null}
-                  </div>
-                );
-              })}
-            </div>
-
-            <div className="agent-layer">
+          <div className="agent-room-scene" aria-label="Sala de comando visual dos agentes Webfael">
+            <img className="room-background" src="/agent-room/command-room.png" alt="Sala de comando futurista dos agentes Webfael" />
+            <div className="agent-layer scene-layer">
               {agents.map((agent) => (
                 <AgentAvatar key={agent.id} agent={agent} selected={agent.id === selectedId} onClick={() => setSelectedId(agent.id)} />
               ))}
             </div>
+            <div className="scene-hud scene-hud-left">Central IA · Webfael</div>
+            <div className="scene-hud scene-hud-right">Clique nos agentes</div>
           </div>
         </div>
 
