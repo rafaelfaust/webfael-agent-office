@@ -80,6 +80,15 @@ function AgentAvatar({ agent, selected, onClick }: { agent: Agent; selected: boo
 function WorldProps() {
   return (
     <div className="world-props" aria-hidden="true">
+      <span className="prop command-room-window" />
+      <span className="prop skyline skyline-a" />
+      <span className="prop skyline skyline-b" />
+      <span className="prop central-command-table" />
+      <span className="prop central-hologram" />
+      <span className="prop hologram-ring ring-a" />
+      <span className="prop hologram-ring ring-b" />
+      <span className="prop ceiling-light light-a" />
+      <span className="prop ceiling-light light-b" />
       <span className="prop neon-route route-a" />
       <span className="prop neon-route route-b" />
       <span className="prop light-cone command" />

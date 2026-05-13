@@ -242,3 +242,204 @@ dl { margin: 0; display: grid; gap: 14px; } dt { color: var(--muted); font-size:
 .agent-weblia .agent-hair { background: #3b0764; box-shadow: inset 8px 0 rgba(167,139,250,.38); }
 .agent-arm.left { transform-origin: top right; transform: rotate(8deg); } .agent-arm.right { transform-origin: top left; transform: rotate(-8deg); }
 @media (max-width: 720px) { .tile-map { transform: none; } .agent-task-bubble { display: none; } }
+
+/* V7 - Agent Room: sala de comando com cara de produto vendável */
+:root {
+  --room-yellow: #facc15;
+  --room-cyan: #22d3ee;
+  --room-purple: #a78bfa;
+}
+
+.game-shell {
+  width: min(1680px, calc(100% - 20px));
+}
+
+.game-stage {
+  background:
+    radial-gradient(circle at 50% 0%, rgba(250,204,21,.14), transparent 35rem),
+    linear-gradient(180deg, rgba(255,255,255,.075), rgba(255,255,255,.025));
+}
+
+.map-viewport {
+  min-height: clamp(650px, calc(100vh - 285px), 900px);
+  background:
+    radial-gradient(ellipse at 50% 90%, rgba(0,0,0,.75), transparent 45rem),
+    radial-gradient(circle at 50% 18%, rgba(250,204,21,.15), transparent 28rem),
+    linear-gradient(180deg, #111827 0%, #050505 58%, #020202 100%);
+}
+
+.map-viewport::before {
+  content: "";
+  position: absolute;
+  inset: 18px 18px auto;
+  height: 48%;
+  border-radius: 26px 26px 12px 12px;
+  background:
+    linear-gradient(90deg, rgba(250,204,21,.18), transparent 16%, transparent 84%, rgba(250,204,21,.18)),
+    radial-gradient(circle at 50% 0%, rgba(34,211,238,.12), transparent 52%),
+    linear-gradient(180deg, rgba(15,23,42,.92), rgba(2,6,23,.62));
+  border: 1px solid rgba(250,204,21,.18);
+  box-shadow: inset 0 -60px 80px rgba(0,0,0,.38), 0 28px 80px rgba(0,0,0,.38);
+  pointer-events: none;
+}
+
+.map-viewport::after {
+  content: "";
+  position: absolute;
+  left: 5%;
+  right: 5%;
+  bottom: 34px;
+  height: 120px;
+  background: radial-gradient(ellipse at 50% 50%, rgba(250,204,21,.22), transparent 68%);
+  filter: blur(22px);
+  pointer-events: none;
+}
+
+.tile-map {
+  margin-top: 42px;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.12), transparent 34px),
+    radial-gradient(circle at 50% 48%, rgba(250,204,21,.14), transparent 34%),
+    linear-gradient(135deg, rgba(250,204,21,.18), rgba(255,255,255,.035));
+  border-color: rgba(250,204,21,.32);
+  box-shadow:
+    inset 0 0 80px rgba(0,0,0,.48),
+    inset 0 0 0 1px rgba(255,255,255,.06),
+    0 22px 0 #17110a,
+    0 60px 130px rgba(0,0,0,.78);
+  transform: rotateX(5deg) rotateZ(-.6deg) translateY(8px);
+}
+
+.tile-map::before {
+  border-color: rgba(250,204,21,.18);
+  box-shadow:
+    inset 0 0 0 8px rgba(120,53,15,.18),
+    inset 0 0 80px rgba(0,0,0,.46),
+    0 0 45px rgba(250,204,21,.08);
+}
+
+.command-room-window {
+  left: 86px;
+  right: 86px;
+  top: 28px;
+  height: 132px;
+  border-radius: 22px 22px 10px 10px;
+  background:
+    linear-gradient(90deg, rgba(250,204,21,.32) 0 2px, transparent 2px 19%, rgba(250,204,21,.18) 19.4% 20%, transparent 20.4% 39%, rgba(250,204,21,.18) 39.4% 40%, transparent 40.4% 59%, rgba(250,204,21,.18) 59.4% 60%, transparent 60.4% 79%, rgba(250,204,21,.18) 79.4% 80%, transparent 80.4%),
+    radial-gradient(circle at 35% 20%, rgba(34,211,238,.18), transparent 30%),
+    linear-gradient(180deg, rgba(15,23,42,.65), rgba(2,6,23,.82));
+  border: 1px solid rgba(250,204,21,.24);
+  box-shadow: inset 0 0 40px rgba(34,211,238,.08), 0 16px 34px rgba(0,0,0,.32);
+}
+
+.skyline {
+  bottom: auto;
+  top: 112px;
+  height: 42px;
+  background: linear-gradient(180deg, rgba(250,204,21,.18), rgba(250,204,21,.04));
+  clip-path: polygon(0 100%,0 45%,7% 45%,7% 16%,14% 16%,14% 65%,22% 65%,22% 25%,30% 25%,30% 78%,42% 78%,42% 35%,52% 35%,52% 8%,62% 8%,62% 70%,74% 70%,74% 28%,83% 28%,83% 52%,92% 52%,92% 18%,100% 18%,100% 100%);
+  opacity: .72;
+}
+.skyline-a { left: 130px; width: 230px; }
+.skyline-b { right: 126px; width: 260px; transform: scaleX(-1); }
+
+.ceiling-light {
+  top: 12px;
+  width: 220px;
+  height: 120px;
+  background: radial-gradient(ellipse at 50% 0%, rgba(250,204,21,.42), transparent 64%);
+  filter: blur(6px);
+  opacity: .62;
+  mix-blend-mode: screen;
+}
+.light-a { left: 190px; }
+.light-b { right: 170px; background: radial-gradient(ellipse at 50% 0%, rgba(34,211,238,.30), transparent 64%); }
+
+.central-command-table {
+  left: 50%;
+  top: 49%;
+  width: 250px;
+  height: 120px;
+  transform: translate(-50%, -50%) rotate(-.5deg);
+  border-radius: 50%;
+  background:
+    radial-gradient(ellipse at 50% 28%, rgba(250,204,21,.52), transparent 28%),
+    linear-gradient(180deg, #facc15 0 12%, #92400e 13% 45%, #451a03 46% 100%);
+  border: 2px solid rgba(255,255,255,.22);
+  box-shadow:
+    inset 0 8px 0 rgba(255,255,255,.18),
+    inset 0 -18px 0 rgba(0,0,0,.28),
+    0 18px 0 rgba(69,26,3,.62),
+    0 38px 48px rgba(0,0,0,.42),
+    0 0 42px rgba(250,204,21,.18);
+}
+
+.central-hologram {
+  left: 50%;
+  top: 41%;
+  width: 84px;
+  height: 120px;
+  transform: translate(-50%, -50%);
+  background:
+    radial-gradient(ellipse at 50% 85%, rgba(34,211,238,.42), transparent 34%),
+    linear-gradient(180deg, transparent, rgba(34,211,238,.42) 45%, transparent);
+  clip-path: polygon(50% 0, 84% 68%, 50% 100%, 16% 68%);
+  filter: drop-shadow(0 0 18px rgba(34,211,238,.75));
+  opacity: .9;
+  animation: holoFloat 2.7s ease-in-out infinite;
+}
+
+.hologram-ring {
+  left: 50%;
+  top: 45%;
+  border-radius: 50%;
+  border: 2px solid rgba(34,211,238,.55);
+  transform: translate(-50%, -50%) rotateX(68deg);
+  box-shadow: 0 0 18px rgba(34,211,238,.55);
+}
+.ring-a { width: 132px; height: 132px; animation: ringSpin 5s linear infinite; }
+.ring-b { width: 88px; height: 88px; border-color: rgba(250,204,21,.58); box-shadow: 0 0 18px rgba(250,204,21,.45); animation: ringSpin 3.5s linear infinite reverse; }
+
+.room-plaque {
+  background: rgba(2,6,23,.9);
+  border-color: rgba(250,204,21,.34);
+  box-shadow: 0 0 18px rgba(250,204,21,.09), 0 8px 18px rgba(0,0,0,.32);
+}
+
+.agent-nameplate,
+.agent-task-bubble,
+.hud-card {
+  box-shadow: 0 16px 32px rgba(0,0,0,.38), inset 0 1px 0 rgba(255,255,255,.08);
+}
+
+.map-agent.selected .agent-nameplate {
+  border-color: rgba(250,204,21,.8);
+  color: #fef3c7;
+  box-shadow: 0 0 22px rgba(250,204,21,.22), 0 14px 28px rgba(0,0,0,.42);
+}
+
+.tile-console,
+.tile-pc,
+.tile-board,
+.tile-server {
+  animation: terminalGlow 2.4s ease-in-out infinite;
+}
+
+.tile-spawn {
+  box-shadow: inset 0 0 0 2px rgba(250,204,21,.28), 0 0 24px rgba(250,204,21,.22);
+}
+
+@keyframes holoFloat {
+  0%, 100% { transform: translate(-50%, -50%) translateY(0); opacity: .82; }
+  50% { transform: translate(-50%, -50%) translateY(-8px); opacity: 1; }
+}
+
+@keyframes ringSpin {
+  from { rotate: 0deg; }
+  to { rotate: 360deg; }
+}
+
+@keyframes terminalGlow {
+  0%, 100% { filter: brightness(1); }
+  50% { filter: brightness(1.16) saturate(1.15); }
+}
