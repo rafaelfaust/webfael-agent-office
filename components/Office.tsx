@@ -1,7 +1,7 @@
 "use client";
 
 import { CSSProperties, useMemo, useState } from "react";
-import { Agent, agents, deliveryBoard, limitPolicy, operations } from "@/data/agents";
+import { Agent, agents, deliveryBoard, limitPolicy, operations, prospectingPolicy } from "@/data/agents";
 import { officeMap, tileTheme } from "@/data/officeMap";
 
 const statusLabel = {
@@ -20,11 +20,11 @@ const statusClass = {
 
 const pct = (value: number, total: number) => Math.min(100, Math.round((value / total) * 100));
 
-const scenePositions: Record<string, { x: number; y: number; scale?: number }> = {
-  webceo: { x: 46, y: 43, scale: 1.02 },
-  weblia: { x: 73, y: 43, scale: 1 },
-  webixtepo: { x: 28, y: 72, scale: 1.04 },
-  webrafa: { x: 72, y: 72, scale: 1.04 },
+const scenePaths: Record<string, { points: { x: number; y: number }[]; scale?: number; delay?: string }> = {
+  webceo: { points: [{ x: 43, y: 43 }, { x: 48, y: 43 }, { x: 48, y: 51 }, { x: 43, y: 51 }], scale: 1.02, delay: "0s" },
+  weblia: { points: [{ x: 72, y: 42 }, { x: 66, y: 42 }, { x: 66, y: 50 }, { x: 75, y: 50 }], scale: 1, delay: "-2s" },
+  webixtepo: { points: [{ x: 28, y: 70 }, { x: 34, y: 70 }, { x: 34, y: 78 }, { x: 27, y: 78 }], scale: 1.04, delay: "-4s" },
+  webrafa: { points: [{ x: 72, y: 70 }, { x: 78, y: 70 }, { x: 78, y: 78 }, { x: 70, y: 78 }], scale: 1.04, delay: "-6s" },
 };
 
 function LimitMeter({ value, limit }: { value: number; limit: number }) {
@@ -40,17 +40,44 @@ function LimitMeter({ value, limit }: { value: number; limit: number }) {
   );
 }
 
+function AgentSprite({ agent }: { agent: Agent }) {
+  return (
+    <span className="scene-sprite" aria-hidden="true">
+      <span className="sprite-shadow" />
+      <span className="sprite-body">
+        <span className="sprite-headset" />
+        <span className="sprite-hair" />
+        <span className="sprite-face"><i /><b /></span>
+        <span className="sprite-ear left" />
+        <span className="sprite-ear right" />
+        <span className="sprite-arm left" />
+        <span className="sprite-arm right" />
+        <span className="sprite-torso">{agent.initials}</span>
+        <span className="sprite-legs" />
+      </span>
+    </span>
+  );
+}
+
 function AgentAvatar({ agent, selected, onClick }: { agent: Agent; selected: boolean; onClick: () => void }) {
-  const position = scenePositions[agent.id] ?? { x: 50, y: 50, scale: 1 };
+  const path = scenePaths[agent.id] ?? { points: [{ x: 50, y: 50 }, { x: 52, y: 50 }, { x: 52, y: 52 }, { x: 50, y: 52 }], scale: 1 };
+  const [p0, p1, p2, p3] = path.points;
 
   return (
     <button
       className={`scene-agent agent-${agent.id} ${agent.status === "executando" ? "is-working" : ""} ${selected ? "selected" : ""}`}
       style={{
         "--agent-color": agent.color,
-        "--scene-x": `${position.x}%`,
-        "--scene-y": `${position.y}%`,
-        "--scene-scale": position.scale ?? 1,
+        "--scene-scale": path.scale ?? 1,
+        "--walk-delay": path.delay ?? "0s",
+        "--p0x": `${p0.x}%`,
+        "--p0y": `${p0.y}%`,
+        "--p1x": `${p1.x}%`,
+        "--p1y": `${p1.y}%`,
+        "--p2x": `${p2.x}%`,
+        "--p2y": `${p2.y}%`,
+        "--p3x": `${p3.x}%`,
+        "--p3y": `${p3.y}%`,
       } as CSSProperties}
       onClick={onClick}
       aria-label={`Selecionar ${agent.name}`}
@@ -60,7 +87,7 @@ function AgentAvatar({ agent, selected, onClick }: { agent: Agent; selected: boo
         <span className={statusClass[agent.status]} />
         {agent.name}
       </span>
-      <img className="agent-image" src={`/agents/${agent.id}.png`} alt="" aria-hidden="true" />
+      <AgentSprite agent={agent} />
     </button>
   );
 }
@@ -207,6 +234,20 @@ function DeliveryCard() {
   );
 }
 
+function ProspectingPolicyCard() {
+  return (
+    <div className="hud-card prospect-card">
+      <p className="hud-label">Trava comercial WebLia</p>
+      <strong>{prospectingPolicy.lockedRegion}</strong>
+      <p>{prospectingPolicy.leadRule}</p>
+      <div className="policy-tags">
+        {prospectingPolicy.forbiddenWithoutApproval.map((item) => <span key={item}>Bloqueado: {item}</span>)}
+      </div>
+      <small>{prospectingPolicy.status}</small>
+    </div>
+  );
+}
+
 function LimitNoteCard({ selected }: { selected: Agent }) {
   return (
     <div className="hud-card note-card">
@@ -275,6 +316,7 @@ export function Office() {
             <SquadMatrix selectedId={selectedId} onSelect={setSelectedId} />
           </div>
           <RosterCard selectedId={selectedId} onSelect={setSelectedId} />
+          <ProspectingPolicyCard />
           <DeliveryCard />
           <LimitNoteCard selected={selected} />
         </div>

@@ -99,7 +99,7 @@ export const agents: Agent[] = [
     role: "SDR, prospecção e qualificação comercial",
     room: "Sala Comercial",
     status: "executando",
-    task: "Organizando leads, sinais de dor e follow-up",
+    task: "Prospectando apenas no corredor Imbituba → Tubarão/SC",
     grid: { x: 15, y: 3 },
     workPath: [
       { x: 15, y: 3 },
@@ -115,9 +115,17 @@ export const agents: Agent[] = [
     automationScore: 74,
     risk: "medio",
     mood: "Prospectando",
-    queue: ["Leads PMEs", "Follow-up", "Diagnóstico"],
+    queue: ["Imbituba → Tubarão/SC", "Só lead com contato", "Follow-up", "Diagnóstico"],
   },
 ];
+
+export const prospectingPolicy = {
+  owner: "WebLia",
+  lockedRegion: "Corredor Imbituba → Tubarão/SC",
+  forbiddenWithoutApproval: ["Belém/PA", "troca de cidade", "base sem WhatsApp/e-mail/telefone"],
+  leadRule: "Lead acionável precisa ter empresa + telefone/WhatsApp/e-mail. Nome solto é só alvo de pesquisa.",
+  status: "Trava operacional ativa: não mudar praça sem aprovação do Rafael.",
+};
 
 export const operations = [
   { label: "Entregas hoje", value: "9", tone: "green" },

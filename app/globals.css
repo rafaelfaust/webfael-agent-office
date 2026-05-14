@@ -540,3 +540,182 @@ dl { margin: 0; display: grid; gap: 14px; } dt { color: var(--muted); font-size:
   .agent-room-scene { width: 900px; max-width: none; border-radius: 20px; }
   .scene-agent .agent-nameplate { font-size: 10px; }
 }
+
+/* V9 - personagens vivos + trava SDR visível */
+.scene-agent {
+  left: var(--p0x);
+  top: var(--p0y);
+  width: clamp(66px, 7vw, 118px);
+  aspect-ratio: 1 / 1.35;
+  animation: sceneWalk 10s steps(1, end) infinite;
+  animation-delay: var(--walk-delay);
+}
+
+.scene-agent.is-working .scene-sprite {
+  animation: spriteBob .58s steps(2, end) infinite;
+}
+
+.scene-agent.is-working .sprite-legs {
+  animation: legsWalk .58s steps(2, end) infinite;
+}
+
+.scene-sprite {
+  position: absolute;
+  inset: 0;
+  display: block;
+  transform-origin: 50% 82%;
+}
+
+.sprite-shadow {
+  position: absolute;
+  left: 18%;
+  right: 18%;
+  bottom: 3%;
+  height: 13%;
+  border-radius: 50%;
+  background: rgba(0,0,0,.48);
+  filter: blur(3px);
+}
+
+.sprite-body {
+  position: absolute;
+  left: 50%;
+  bottom: 10%;
+  width: 48%;
+  height: 72%;
+  transform: translateX(-50%);
+  image-rendering: pixelated;
+}
+
+.sprite-face {
+  position: absolute;
+  left: 21%;
+  top: 14%;
+  width: 58%;
+  height: 31%;
+  border-radius: 18% 18% 24% 24%;
+  background: #f3c39b;
+  border: 2px solid rgba(0,0,0,.36);
+  z-index: 3;
+  box-shadow: inset 8px 0 rgba(255,255,255,.16);
+}
+
+.sprite-face i,
+.sprite-face b {
+  position: absolute;
+  top: 42%;
+  width: 10%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: #020617;
+}
+.sprite-face i { left: 26%; }
+.sprite-face b { right: 26%; }
+
+.sprite-hair {
+  position: absolute;
+  left: 17%;
+  top: 6%;
+  width: 66%;
+  height: 21%;
+  border-radius: 18% 18% 8% 8%;
+  background: #111827;
+  z-index: 4;
+  box-shadow: inset 14px 0 color-mix(in srgb, var(--agent-color), transparent 55%);
+}
+
+.sprite-ear {
+  position: absolute;
+  top: 29%;
+  width: 12%;
+  height: 13%;
+  border-radius: 35%;
+  background: #deb08a;
+  z-index: 2;
+}
+.sprite-ear.left { left: 12%; }
+.sprite-ear.right { right: 12%; }
+
+.sprite-headset {
+  position: absolute;
+  left: 13%;
+  top: 21%;
+  width: 74%;
+  height: 25%;
+  border: 3px solid #020617;
+  border-bottom: 0;
+  border-radius: 999px 999px 0 0;
+  z-index: 5;
+}
+.sprite-headset::after {
+  content: "";
+  position: absolute;
+  right: -16%;
+  bottom: -13%;
+  width: 32%;
+  height: 4px;
+  border-radius: 999px;
+  background: #020617;
+  transform: rotate(18deg);
+}
+
+.sprite-torso {
+  position: absolute;
+  left: 12%;
+  top: 49%;
+  width: 76%;
+  height: 31%;
+  display: grid;
+  place-items: center;
+  border-radius: 14% 14% 8% 8%;
+  background: linear-gradient(180deg, var(--agent-color), color-mix(in srgb, var(--agent-color), #000 30%));
+  color: #020617;
+  border: 2px solid rgba(255,255,255,.58);
+  font-size: clamp(7px, .8vw, 11px);
+  font-weight: 950;
+  z-index: 3;
+}
+
+.sprite-arm {
+  position: absolute;
+  top: 53%;
+  width: 16%;
+  height: 29%;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--agent-color), #000 28%);
+  z-index: 2;
+}
+.sprite-arm.left { left: 0; transform: rotate(9deg); transform-origin: top right; }
+.sprite-arm.right { right: 0; transform: rotate(-9deg); transform-origin: top left; }
+
+.sprite-legs {
+  position: absolute;
+  left: 26%;
+  top: 78%;
+  width: 48%;
+  height: 16%;
+  border-left: 13px solid #111827;
+  border-right: 13px solid #111827;
+  z-index: 1;
+}
+
+.scene-agent.selected .sprite-body {
+  filter: drop-shadow(0 0 16px var(--agent-color));
+}
+
+.prospect-card {
+  border-color: rgba(167,139,250,.34);
+  background: radial-gradient(circle at 12% 0%, rgba(167,139,250,.18), transparent 38%), rgba(255,255,255,.045);
+}
+.prospect-card strong { display: block; color: #ddd6fe; font-size: 20px; letter-spacing: -.03em; }
+.prospect-card p { color: #cbd5e1; line-height: 1.45; margin: 10px 0; }
+.prospect-card small { display: block; color: #fde68a; margin-top: 10px; font-weight: 900; }
+.policy-tags { display: flex; flex-wrap: wrap; gap: 7px; }
+.policy-tags span { border: 1px solid rgba(239,68,68,.24); background: rgba(239,68,68,.1); color: #fecaca; border-radius: 999px; padding: 7px 9px; font-size: 11px; font-weight: 900; }
+
+@keyframes sceneWalk {
+  0%, 100% { left: var(--p0x); top: var(--p0y); }
+  25% { left: var(--p1x); top: var(--p1y); }
+  50% { left: var(--p2x); top: var(--p2y); }
+  75% { left: var(--p3x); top: var(--p3y); }
+}
